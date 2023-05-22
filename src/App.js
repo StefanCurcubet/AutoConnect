@@ -1,24 +1,35 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import HomePage from './Pages/HomePage';
+import AuthPage from './Pages/AuthPage';
+import Navbar from './Components/Navbar';
+import { useEffect } from 'react';
+import { getLocalTokens } from './Features/userSlice';
+import { useDispatch } from 'react-redux';
+import FavouritesPage from './Pages/FavouritesPage';
 
 function App() {
+
+  const dispatch = useDispatch()
+
+  useEffect(()=> {
+    if (localStorage.getItem('authTokens')) {
+      console.log('got auth tokens at top level to set access and user info');
+      dispatch(getLocalTokens(JSON.parse(localStorage.getItem('authTokens'))))
+    }
+  },[])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/login' element={<AuthPage />} />
+          <Route path='/favourites' element={<FavouritesPage/>} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
