@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { getLocalTokens } from './Features/userSlice';
 import { useDispatch } from 'react-redux';
 import FavouritesPage from './Pages/FavouritesPage';
+import NewListingPage from './Pages/NewListingPage';
 
 function App() {
 
@@ -26,7 +27,8 @@ function App() {
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/login' element={<AuthPage />} />
-          <Route path='/favourites' element={<FavouritesPage/>} />
+          <Route path='/favourites' element={<FavouritesPage />} />
+          <Route path='/newListing' element={<NewListingPage />} />
         </Routes>
       </BrowserRouter>
     </>

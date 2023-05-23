@@ -7,7 +7,7 @@ export default function Post({postData}){
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const {favouritedPosts, isLogged} = useSelector((store) => store.user)
-    const {id, title, imageUrl, brand, modelYear, mileage, price, added} = postData
+    const {id, title, imageUrl, brand, modelYear, mileage, price, author, added} = postData
     function formatTime(timeStamp){
         return new Date(timeStamp).toLocaleString()
     }
@@ -41,6 +41,7 @@ export default function Post({postData}){
                         <p className="card-text">{brand}</p>
                         <p className="card-text">{modelYear}</p>
                         <p className="card-text">{mileage} km</p>
+                        <p className="card-text">Added by: {author} </p>
                         <p className="card-text"><small className="text-body-secondary">{formatTime(added)}</small></p>
                     </div>
                 </div>

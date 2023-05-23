@@ -16,6 +16,9 @@ export default function Navbar() {
                 <Link to={'/favourites'} className="nav-link ms-3" style={{cursor: 'pointer'}}>
                     Favourites
                 </Link>
+                <Link to={'/newListing'} className="nav-link ms-3" style={{cursor: 'pointer'}}>
+                    Create New Listing
+                </Link>
                 <div className="nav-link ms-3" style={{cursor: 'pointer'}} onClick={() => {dispatch(logout())}}>Log out</div>
             </>
                 :
