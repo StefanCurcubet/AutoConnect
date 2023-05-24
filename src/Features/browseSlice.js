@@ -12,6 +12,7 @@ const initialState = {
         mileage_from: "",
         mileage_until: "",
     },
+    selectedPostId: "",
     isLoading : true
 }
 
@@ -35,6 +36,10 @@ const browseSlice = createSlice({
         },
         clearFilters: (state) => {
             state.filter = initialState.filter
+        },
+        selectPost: (state, action) => {
+            console.log(action.payload);
+            state.selectedPostId = action.payload
         }
     },
     extraReducers:{
@@ -51,5 +56,5 @@ const browseSlice = createSlice({
     }
 })
 
-export const {setOrderby, setFilter, clearFilters} = browseSlice.actions
+export const {setOrderby, setFilter, clearFilters, selectPost} = browseSlice.actions
 export default browseSlice.reducer

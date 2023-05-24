@@ -1,14 +1,13 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import { getFavourites, toggleFavourite } from "../Features/userSlice";
-import { useNavigate } from "react-router-dom";
-import { selectPost } from "../Features/browseSlice";
 
-export default function Post({postData}){
+export default function ListingPage() {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const {favouritedPosts, isLogged} = useSelector((store) => store.user)
-    const {id, title, imageUrl, brand, modelYear, mileage, price, author, added} = postData
+    const {allPosts, selectedPostId} = useSelector((store) => store.browse)
     function formatTime(timeStamp){
         return new Date(timeStamp).toLocaleString()
     }
@@ -22,16 +21,21 @@ export default function Post({postData}){
         }
     }
 
-    function handleSelect() {
-        dispatch(selectPost(id))
-        navigate('/viewListing')
+    let selectedListing = {}
+    if (selectedPostId) {
+        selectedListing = allPosts.find((post) => post.id === selectedPostId);
+    } else {
+        navigate('/')
     }
 
+    const {id, title, imageUrl, brand, modelYear, mileage, price, author, added} = selectedListing
+
     return (
-        <div className="card mt-3 card-hover-shadow" onClick={() => handleSelect()}>
+        <div className="container-lg" style={{cursor: 'default'}}>
+            <div className="card mt-3 no-border">
             <div className="row g-0">
                 <div className="col-md-4">
-                    <img src={imageUrl} className="img-fluid rounded-start" style={{cursor: 'pointer'}} alt="carImage"/>
+                    <img src={imageUrl} className="img-fluid rounded-start" alt="carImage"/>
                 </div>
                 <div className="col-md-8">
                     <div className="card-body">
@@ -52,6 +56,8 @@ export default function Post({postData}){
                     </div>
                 </div>
             </div>
+        </div>
+        <hr className="shadow"/>
         </div>
     )
 }

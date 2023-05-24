@@ -8,6 +8,7 @@ import { getLocalTokens } from './Features/userSlice';
 import { useDispatch } from 'react-redux';
 import FavouritesPage from './Pages/FavouritesPage';
 import NewListingPage from './Pages/NewListingPage';
+import ListingPage from './Pages/ListingPage';
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
           <Route path='/login' element={<AuthPage />} />
           <Route path='/favourites' element={<FavouritesPage />} />
           <Route path='/newListing' element={<NewListingPage />} />
+          <Route path='/viewListing' element={<ListingPage />} />
         </Routes>
       </BrowserRouter>
     </>

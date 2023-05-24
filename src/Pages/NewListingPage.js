@@ -31,9 +31,8 @@ export default function NewListingPage() {
         })
         if (response.status === 200) {
             setListingAdded(true)
-            return response.json()
          } else {
-             alert('something is wrong')
+             alert('Something went wrong.')
          }
     }
 

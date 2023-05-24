@@ -7,3 +7,13 @@ body{
 .filter-dropdown{
   width: 15rem;
 }
+
+.no-border{
+  border: none;
+}
+
+.card-hover-shadow:hover{
+  cursor:default;
+  box-shadow: 0 0 8px rgba(0,0,0,0.5);
+  transition: 0.3s ease-in-out;
+}
