@@ -30,7 +30,7 @@ function App() {
           <Route path='/login' element={<AuthPage />} />
           <Route path='/favourites' element={<FavouritesPage />} />
           <Route path='/newListing' element={<NewListingPage />} />
-          <Route path='/viewListing' element={<ListingPage />} />
+          <Route path='/viewListing/:listingId' element={<ListingPage />} />
         </Routes>
       </BrowserRouter>
     </>

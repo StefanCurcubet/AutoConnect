@@ -10,14 +10,14 @@ export default function Navbar() {
     return (
         <nav className="navbar navbar-expand-md bg-body-tertiary color-white shadow sticky-top justify-content-start">
             <div className="navbar-brand ms-5" style={{cursor: 'default'}}>AutoConnect</div>
-            <button class="navbar-toggler no-border" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button className="navbar-toggler no-border" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <i className="bi bi-list"></i>
             </button>
             <div className="ms-auto me-2 me-sm-5 d-flex align-items-center d-md-none">
                 <i className="bi bi-person-circle me-1"></i>
                 <h6 className="m-0">{userInfo ? userInfo.username : "Guest"}</h6>
             </div>
-            <div class="collapse navbar-collapse" id="navbarContent">
+            <div className="collapse navbar-collapse" id="navbarContent">
                 <a className="nav-link p-2" href="/">Browse</a>
                 {isLogged ?
                 <>

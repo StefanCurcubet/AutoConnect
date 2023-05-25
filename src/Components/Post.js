@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getFavourites, toggleFavourite } from "../Features/userSlice";
 import { useNavigate } from "react-router-dom";
-import { selectPost } from "../Features/browseSlice";
 
 export default function Post({postData}){
 
@@ -13,18 +12,18 @@ export default function Post({postData}){
         return new Date(timeStamp).toLocaleString()
     }
 
-    async function updateFavourite(id) {
+    async function updateFavourite(id,e) {
         if (!isLogged){
             navigate('/login')
         } else {
+            e.stopPropagation()
             await dispatch(toggleFavourite(id));
             dispatch(getFavourites());
         }
     }
 
     function handleSelect() {
-        dispatch(selectPost(id))
-        navigate('/viewListing')
+        navigate(`/viewListing/${id}`)
     }
 
     return (
@@ -39,9 +38,9 @@ export default function Post({postData}){
                             <strong>{title}</strong>
                             <strong className="ms-5 text-danger"> {price} EUR</strong>
                             {favouritedPosts.split(',').includes(`${id}`) ?
-                            <i className="bi bi-star-fill ms-3 text-danger star-hover" onClick={() => updateFavourite(id)} style={{cursor: "pointer"}}></i>
+                            <i className="bi bi-star-fill ms-3 text-danger star-hover" onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
                             :
-                            <i className="bi bi-star ms-3 star-hover " onClick={() => updateFavourite(id)} style={{cursor: "pointer"}}></i>
+                            <i className="bi bi-star ms-3 star-hover " onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
                             }
                         </h5>
                         <p className="card-text">{brand}</p>

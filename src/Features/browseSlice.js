@@ -12,7 +12,6 @@ const initialState = {
         mileage_from: "",
         mileage_until: "",
     },
-    selectedPostId: "",
     isLoading : true
 }
 
