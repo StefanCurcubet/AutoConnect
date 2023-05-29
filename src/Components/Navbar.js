@@ -27,6 +27,9 @@ export default function Navbar() {
                     <Link to={'/newListing'} className="nav-link p-2" style={{cursor: 'pointer'}}>
                         Create New Listing
                     </Link>
+                    <Link to={'/messaging'} className="nav-link p-2" style={{cursor: 'pointer'}}>
+                        Messages
+                    </Link>
                     <div className="nav-link p-2" style={{cursor: 'pointer'}} onClick={() => {dispatch(logout())}}>Log out</div>
                 </>
                     :

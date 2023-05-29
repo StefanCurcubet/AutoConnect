@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams, Link } from "react-router-dom"
 import { getFavourites, toggleFavourite } from "../Features/userSlice";
 import { useEffect, useState } from "react";
 import Comment from "../Components/Comment";
@@ -52,7 +52,6 @@ export default function ListingPage() {
         getComments()
     },[])
 
-
     async function updateFavourite(id) {
         if (!isLogged){
             navigate('/login')
@@ -72,45 +71,70 @@ export default function ListingPage() {
     return (
         <div className="container-lg" style={{cursor: 'default'}}>
             <div className="card mt-3 no-border">
-            <div className="row g-0">
-                <div className="col-md-4">
-                    <img src={imageUrl} className="img-fluid rounded-start" alt="carImage"/>
-                </div>
-                <div className="col-md-8">
-                    <div className="card-body">
-                        <h5 className="card-title mb-4" >
+                <div className="row g-0">
+                    <div className="col-md-4">
+                        <img src={imageUrl} className="img-fluid rounded-start" alt="carImage"/>
+                    </div>
+                    <div className="col-md-8">
+                        <div className="card-body">
+                        <h5 className="card-title mb-4 d-none d-sm-flex justify-content-between" >
                             <strong>{title}</strong>
-                            <strong className="ms-5 text-danger"> {price} EUR</strong>
-                            {favouritedPosts.split(',').includes(`${id}`) ?
-                            <i className="bi bi-star-fill ms-3 text-danger star-hover" onClick={() => updateFavourite(id)} style={{cursor: "pointer"}}></i>
-                            :
-                            <i className="bi bi-star ms-3 star-hover " onClick={() => updateFavourite(id)} style={{cursor: "pointer"}}></i>
-                            }
+                            <div>
+                                <strong className="ms-5 text-danger"> {price} EUR</strong>
+                                {favouritedPosts.split(',').includes(`${id}`) ?
+                                    <i className="bi bi-star-fill ms-3 text-danger star-hover" onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
+                                :
+                                    <i className="bi bi-star ms-3 star-hover " onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
+                                }
+                            </div>
+                        </h5>
+                        <h5 className="card-title mb-4 d-sm-none" >
+                            <strong>{title}</strong>
+                            <div>
+                                <strong className="text-danger"> {price} EUR</strong>
+                                {favouritedPosts.split(',').includes(`${id}`) ?
+                                    <i className="bi bi-star-fill ms-3 text-danger star-hover" onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
+                                :
+                                    <i className="bi bi-star ms-3 star-hover " onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
+                                }
+                            </div>
                         </h5>
                         <p className="card-text">{brand}</p>
                         <p className="card-text">{modelYear}</p>
                         <p className="card-text">{mileage} km</p>
                         <p className="card-text">Added by: {author} </p>
                         <p className="card-text"><small className="text-body-secondary">{formatTime(added)}</small></p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <hr/>
-        <button className="btn hover-light no-border mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAddComment" aria-expanded="false">
-            <i className="bi bi-chat-left me-2"></i>
-            Leave a comment
-        </button>
-        <div className="collapse mb-3" id="collapseAddComment">
-            <div className="card card-body d-flex">
-                <textarea className="no-border" placeholder="Type comment here ..." onChange={(e) => setNewComment(e.target.value)} />
-                <div className="d-flex">
-                    <button className="btn btn-outline-primary me-2 mt-2" data-bs-toggle="collapse" data-bs-target="#collapseAddComment" onClick={() => addComment()}>Submit</button>
-                    <button className="btn btn-outline-danger me-auto mt-2" data-bs-toggle="collapse" data-bs-target="#collapseAddComment">Cancel</button>
-                </div>
+            <hr/>
+            <button className="btn hover-light no-border mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAddComment" aria-expanded="false">
+                <i className="bi bi-chat-left me-2"></i>
+                Leave a comment
+            </button>
+            <div className="collapse mb-3" id="collapseAddComment">
+                {isLogged ?
+                    <div className="card card-body d-flex">
+                        <textarea className="no-border" placeholder="Type comment here ..." onChange={(e) => setNewComment(e.target.value)} />
+                        <div className="d-flex">
+                            <button className="btn btn-outline-primary me-2 mt-2" data-bs-toggle="collapse" data-bs-target="#collapseAddComment" onClick={() => addComment()}>Submit</button>
+                            <button className="btn btn-outline-danger me-auto mt-2" data-bs-toggle="collapse" data-bs-target="#collapseAddComment">Cancel</button>
+                        </div>
+                    </div>
+                :
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Hello, Guest</h5>
+                            <p class="card-text">Log in to join the conversation.</p>
+                            <Link to={'/login'} className="btn btn-primary" >
+                                Log in
+                            </Link>
+                        </div>
+                    </div>
+                }
             </div>
-        </div>
-        {commentList?.length !== 0 ? commentList : <h5 className="mt-4 ms-2">No comments yet</h5> }
+            {commentList?.length !== 0 ? commentList : <h5 className="mt-4 ms-2">No comments yet</h5> }
         </div>
     )
 }

@@ -22,3 +22,7 @@ body{
 .hover-light:hover{
   background-color: #e9ecef;
 }
+
+.max-width-80{
+  max-width: 80%;
+}

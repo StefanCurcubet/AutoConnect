@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import FavouritesPage from './Pages/FavouritesPage';
 import NewListingPage from './Pages/NewListingPage';
 import ListingPage from './Pages/ListingPage';
+import MessagingPage from './Pages/MessagingPage';
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
           <Route path='/favourites' element={<FavouritesPage />} />
           <Route path='/newListing' element={<NewListingPage />} />
           <Route path='/viewListing/:listingId' element={<ListingPage />} />
+          <Route path='/messaging' element={<MessagingPage />} />
         </Routes>
       </BrowserRouter>
     </>

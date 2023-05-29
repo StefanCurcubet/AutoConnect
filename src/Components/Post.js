@@ -14,6 +14,7 @@ export default function Post({postData}){
 
     async function updateFavourite(id,e) {
         if (!isLogged){
+            e.stopPropagation()
             navigate('/login')
         } else {
             e.stopPropagation()
@@ -34,14 +35,27 @@ export default function Post({postData}){
                 </div>
                 <div className="col-md-8">
                     <div className="card-body">
-                        <h5 className="card-title mb-4" >
+                        <h5 className="card-title mb-4 d-none d-sm-flex justify-content-between" >
                             <strong>{title}</strong>
+                            <div>
                             <strong className="ms-5 text-danger"> {price} EUR</strong>
                             {favouritedPosts.split(',').includes(`${id}`) ?
-                            <i className="bi bi-star-fill ms-3 text-danger star-hover" onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
+                                <i className="bi bi-star-fill ms-3 text-danger star-hover" onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
                             :
-                            <i className="bi bi-star ms-3 star-hover " onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
+                                <i className="bi bi-star ms-3 star-hover " onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
                             }
+                            </div>
+                        </h5>
+                        <h5 className="card-title mb-4 d-sm-none" >
+                            <strong>{title}</strong>
+                            <div>
+                                <strong className="text-danger"> {price} EUR</strong>
+                                {favouritedPosts.split(',').includes(`${id}`) ?
+                                    <i className="bi bi-star-fill ms-3 text-danger star-hover" onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
+                                :
+                                    <i className="bi bi-star ms-3 star-hover " onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
+                                }
+                            </div>
                         </h5>
                         <p className="card-text">{brand}</p>
                         <p className="card-text">{modelYear}</p>
