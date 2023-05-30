@@ -1,50 +1,16 @@
 import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import ConversationPartner from "../Components/ConversationPartner"
 import Message from "../Components/Message"
+import { getConversations, getMessages } from "../Features/messagingSlice"
+
 
 export default function MessagingPage() {
 
-    const {userInfo} = useSelector((store) => store.user)
-    const[conversations, setConversations] = useState([])
-    const[selectedConv, setSelectedConv] = useState()
-    const[messages, setMessages] = useState()
+    const {conversations, messages, selectedConv} = useSelector((store) => store.messaging)
+  
     const[reply, setReply] = useState()
-
-    async function getConversations() {
-        const {access} = JSON.parse(localStorage.getItem('authTokens'))
-        const response = await fetch (`http://127.0.0.1:8000/getConversations/`, {
-            method: 'GET',
-            headers: {
-                'Content-Type' : 'application/json',
-                'Authorization' : `Bearer ${access}`,
-            },
-        })
-        if (response.status === 200) {
-            const data = await response.json()
-            setConversations(data)
-            console.log(data);
-         } else {
-            alert('something is wrong')
-         }
-    }
-
-    async function getMessages() {
-        const {access} = JSON.parse(localStorage.getItem('authTokens'))
-        const response = await fetch (`http://127.0.0.1:8000/getMessages/${selectedConv}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type' : 'application/json',
-                'Authorization' : `Bearer ${access}`,
-            },
-        })
-        if (response.status === 200) {
-            const data = await response.json()
-            setMessages(data);
-         } else {
-            alert('something is wrong')
-         }
-    }
+    const dispatch = useDispatch()
 
     async function sendMessage() {
         const {access} = JSON.parse(localStorage.getItem('authTokens'))
@@ -57,7 +23,7 @@ export default function MessagingPage() {
             body: JSON.stringify({reply})
         })
         if (response.status === 200) {
-            getMessages()
+            dispatch(getMessages())
         } else {
             alert('Something went wrong.')
         }
@@ -69,17 +35,17 @@ export default function MessagingPage() {
     }
 
     useEffect(() => {
-        getConversations()
+        dispatch(getConversations())
     },[])
 
     useEffect(() => {
         if (!selectedConv) {
             return
         }
-        getMessages()
+        dispatch(getMessages())
     },[selectedConv])
 
-    const conversations_list = conversations.map((conversation) => <ConversationPartner key={conversation.id} data={conversation} setSelectedConv={setSelectedConv} />)
+    const conversations_list = conversations.map((conversation) => <ConversationPartner key={conversation.id} data={conversation}/>)
     const allMessages = messages?.map((message) => <Message key={message.id} data={message} />)
 
     return (
@@ -105,7 +71,7 @@ export default function MessagingPage() {
                 </div>
             </div>
 
-            <div className="container-md d-none d-md-flex justify-center">
+            <div className="container-md d-none d-md-flex justify-content-center">
                 <div className="d-flex mt-3 flex-column">
                     <h5>Select conversation:</h5>
                     {conversations_list}
@@ -114,9 +80,9 @@ export default function MessagingPage() {
                     <div className="ms-5 me-5 mt-3 d-none d-md-flex flex-column w-75">
                         {!selectedConv ? <h3>Choose a conversation to display messages</h3> :
                         <>
-                         {allMessages}
-                        <hr/>
-                        <div className="card card-body d-flex no-border">
+                        {allMessages}
+                        <div className="card card-body d-flex no-border sticky-bottom">
+                            <hr/>
                             <textarea style={{borderRadius:"5px"}} placeholder="Type here..." value={reply} onChange={(e) => setReply(e.target.value)} />
                             <div className="d-flex">
                                 <button className="btn btn-outline-primary me-2 mt-2" onClick={() => handleMessage()}>Send</button>

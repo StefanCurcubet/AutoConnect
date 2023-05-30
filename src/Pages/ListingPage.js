@@ -3,13 +3,16 @@ import { useNavigate, useParams, Link } from "react-router-dom"
 import { getFavourites, toggleFavourite } from "../Features/userSlice";
 import { useEffect, useState } from "react";
 import Comment from "../Components/Comment";
+import MessageModal from "../Components/MessageModal";
+import { setMessageModalOpen } from "../Features/messagingSlice";
 
 export default function ListingPage() {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const {listingId} = useParams()
-    const {favouritedPosts, isLogged} = useSelector((store) => store.user)
+    const {favouritedPosts, isLogged, userInfo} = useSelector((store) => store.user)
+    const {conversations} = useSelector((store) => store.messaging)
     const [listing, setListing] = useState()
     const [comments, setComments] = useState()
     const [newComment, setNewComment] = useState()
@@ -59,6 +62,10 @@ export default function ListingPage() {
             await dispatch(toggleFavourite(id));
             dispatch(getFavourites());
         }
+    }
+
+    function handleMessage() {
+        console.log(conversations);
     }
 
     if (!listing) {
@@ -113,6 +120,13 @@ export default function ListingPage() {
                 <i className="bi bi-chat-left me-2"></i>
                 Leave a comment
             </button>
+            {author !== userInfo.username ?
+                <button className="btn btn-outline-primary mb-3 ms-2" onClick={() => handleMessage()}>
+                    Message User
+                </button>
+            :
+                null
+            }
             <div className="collapse mb-3" id="collapseAddComment">
                 {isLogged ?
                     <div className="card card-body d-flex">
@@ -135,6 +149,7 @@ export default function ListingPage() {
                 }
             </div>
             {commentList?.length !== 0 ? commentList : <h5 className="mt-4 ms-2">No comments yet</h5> }
+            <MessageModal  recipient={author}/>
         </div>
     )
 }
