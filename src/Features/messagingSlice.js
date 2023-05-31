@@ -6,6 +6,7 @@ const initialState = {
     messages : [],
     selectedConv: null,
     messageModalOpen: false,
+    messageSent: false,
     isLoading: false,
 }
 
@@ -74,6 +75,18 @@ const messagingSlice = createSlice({
         },
     },
     extraReducers: {
+        [newConversation.pending]: (state) => {
+            state.isLoading = true
+        },
+        [newConversation.fulfilled]: (state) => {
+            state.messageSent = true
+            state.isLoading = false
+        },
+        [newConversation.rejected]: (state, action) => {
+            alert(action.error.message)
+            state.messageSent = false
+            state.isLoading = false
+        },
         [getConversations.pending]: (state) => {
             state.isLoading = true
         },
@@ -90,6 +103,7 @@ const messagingSlice = createSlice({
         },
         [getMessages.fulfilled]: (state, action) => {
             state.messages = action.payload
+            state.scrollMessages = true
             state.isLoading = false
         },
         [getMessages.rejected]: (state, action) => {

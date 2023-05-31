@@ -65,6 +65,7 @@ export default function ListingPage() {
     }
 
     function handleMessage() {
+        dispatch(setMessageModalOpen(true))
         console.log(conversations);
     }
 
@@ -120,7 +121,7 @@ export default function ListingPage() {
                 <i className="bi bi-chat-left me-2"></i>
                 Leave a comment
             </button>
-            {author !== userInfo.username ?
+            {author !== userInfo?.username || !userInfo ?
                 <button className="btn btn-outline-primary mb-3 ms-2" onClick={() => handleMessage()}>
                     Message User
                 </button>
