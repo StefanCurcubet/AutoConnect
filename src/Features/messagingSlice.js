@@ -46,6 +46,7 @@ export const newConversation = createAsyncThunk('messaging/newConversation', asy
 })
 
 export const getMessages = createAsyncThunk('messaging/getMessages', async (_,thunkApi) => {
+    console.log('got messages');
     const {access} = JSON.parse(localStorage.getItem('authTokens'))
     const selectedConv = thunkApi.getState().messaging.selectedConv
     const response = await fetch (`http://127.0.0.1:8000/getMessages/${selectedConv}`, {

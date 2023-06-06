@@ -5,8 +5,9 @@ import { logout } from "../Features/userSlice";
 export default function Navbar() {
 
     const {isLogged, userInfo} = useSelector((store) => store.user)
+    const {conversations} = useSelector((store) => store.messaging)
     const dispatch = useDispatch()
-
+    
     return (
         <nav className="navbar navbar-expand-md bg-body-tertiary color-white shadow sticky-top justify-content-start">
             <div className="navbar-brand ms-5" style={{cursor: 'default'}}>AutoConnect</div>
@@ -27,9 +28,12 @@ export default function Navbar() {
                     <Link to={'/newListing'} className="nav-link p-2" style={{cursor: 'pointer'}}>
                         Create New Listing
                     </Link>
-                    <Link to={'/messaging'} className="nav-link p-2" style={{cursor: 'pointer'}}>
-                        Messages
-                    </Link>
+                    <div className="d-flex">
+                        <Link to={'/messaging'} className="nav-link p-2" style={{cursor: 'pointer'}}>
+                            Messages
+                        </Link>
+                        {conversations.find((conversation) => conversation.update_from !== userInfo.username && conversation.update_from !== '') ? <i className="bi bi-exclamation-circle ms-negative text-primary"></i> : null}
+                    </div>
                     <div className="nav-link p-2" style={{cursor: 'pointer'}} onClick={() => {dispatch(logout())}}>Log out</div>
                 </>
                     :

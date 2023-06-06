@@ -10,15 +10,20 @@ import FavouritesPage from './Pages/FavouritesPage';
 import NewListingPage from './Pages/NewListingPage';
 import ListingPage from './Pages/ListingPage';
 import MessagingPage from './Pages/MessagingPage';
+import { getConversations } from './Features/messagingSlice';
 
 function App() {
 
   const dispatch = useDispatch()
 
+  async function handleStart() {
+    await dispatch(getLocalTokens(JSON.parse(localStorage.getItem('authTokens'))))
+    dispatch(getConversations())
+  }
+
   useEffect(()=> {
     if (localStorage.getItem('authTokens')) {
-      console.log('got auth tokens at top level to set access and user info');
-      dispatch(getLocalTokens(JSON.parse(localStorage.getItem('authTokens'))))
+      handleStart()
     }
   },[])
 

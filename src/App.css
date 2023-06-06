@@ -31,3 +31,7 @@ body{
   max-height: 65vh;
   overflow-y: auto;
 }
+
+.ms-negative{
+  margin-left: -0.4rem;
+}
