@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../Features/userSlice";
 
 export default function Navbar() {
@@ -7,6 +7,7 @@ export default function Navbar() {
     const {isLogged, userInfo} = useSelector((store) => store.user)
     const {conversations} = useSelector((store) => store.messaging)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     
     return (
         <nav className="navbar navbar-expand-md bg-body-tertiary color-white shadow sticky-top justify-content-start">
@@ -34,7 +35,7 @@ export default function Navbar() {
                         </Link>
                         {conversations.find((conversation) => conversation.update_from !== userInfo.username && conversation.update_from !== '') ? <i className="bi bi-exclamation-circle ms-negative text-primary"></i> : null}
                     </div>
-                    <div className="nav-link p-2" style={{cursor: 'pointer'}} onClick={() => {dispatch(logout())}}>Log out</div>
+                    <div className="nav-link p-2" style={{cursor: 'pointer'}} onClick={() => {dispatch(logout()); navigate('/')}}>Log out</div>
                 </>
                     :
                     <Link to={'/login'} className="nav-link p-2" style={{cursor: 'pointer'}}>

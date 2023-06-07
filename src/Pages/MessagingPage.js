@@ -73,9 +73,18 @@ export default function MessagingPage() {
                     {conversations.map((conversation) => <ConversationPartner key={conversation.id} data={conversation}/>)}
                 </div>
                 <div className="d-flex mt-3 d-md-flex d-md-none flex-column">
-                {!selectedConv ? <h3>Choose a conversation to display messages</h3> :
+                    {!selectedConv ? <h3>Choose a conversation to display messages</h3> :
                         <>
                             {allMessages}
+                            {messages[messages.length - 1]?.sender === userInfo.username && conversations.find((c) => c.id === selectedConv).update_from === '' ?
+                                    <div className="card ms-auto me-2">
+                                        <div className="card-body fw-light fst-italic p-2 text-secondary">
+                                            Seen by recipient
+                                        </div>
+                                    </div>
+                                : 
+                                    null
+                            }
                             <hr ref={smallScrollRef}/>
                             <div className="card card-body d-flex no-border">
                                 <textarea style={{borderRadius:"5px"}} placeholder="Type here..." value={reply} onChange={(e) => setReply(e.target.value)} />
@@ -84,7 +93,7 @@ export default function MessagingPage() {
                                 </div>
                             </div>
                         </>
-                        }
+                    }
                 </div>
             </div>
 

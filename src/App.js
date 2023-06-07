@@ -34,9 +34,9 @@ function App() {
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/login' element={<AuthPage />} />
+          <Route path='/viewListing/:listingId' element={<ListingPage />} />
           <Route path='/favourites' element={<FavouritesPage />} />
           <Route path='/newListing' element={<NewListingPage />} />
-          <Route path='/viewListing/:listingId' element={<ListingPage />} />
           <Route path='/messaging' element={<MessagingPage />} />
         </Routes>
       </BrowserRouter>

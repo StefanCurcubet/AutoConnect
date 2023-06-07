@@ -35,3 +35,13 @@ body{
 .ms-negative{
   margin-left: -0.4rem;
 }
+
+.no-min-width-mobile{
+  min-width: 0px;
+  inset: -4px auto auto -12px !important;
+}
+
+.no-min-width-pc{
+  min-width: 0px;
+  inset: -4px auto auto -2px !important;
+}
