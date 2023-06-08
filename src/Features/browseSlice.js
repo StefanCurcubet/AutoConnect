@@ -16,6 +16,7 @@ const initialState = {
     isLoading : true
 }
 
+
 export const getAllPosts = createAsyncThunk('browse/getAllPosts', (_, thunkAPI) => {
     const orderby = thunkAPI.getState().browse.orderby
     return fetch(`http://127.0.0.1:8000/getAllPosts/${orderby}`)

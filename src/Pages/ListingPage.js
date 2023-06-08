@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 import Comment from "../Components/Comment";
 import MessageModal from "../Components/MessageModal";
 import { setMessageModalOpen } from "../Features/messagingSlice";
-import fair from '../Images/listing-rating-fair.png'
-import over from '../Images/listing-rating-over.png'
-import under from '../Images/listing-rating-under.png'
+import fair from '../Images/listing-rating-fair.png';
+import over from '../Images/listing-rating-over.png';
+import under from '../Images/listing-rating-under.png';
+import unrated from '../Images/listing-rating-unrated.png'
 import { ratePost } from "../Features/browseSlice";
 
 export default function ListingPage() {
@@ -19,6 +20,9 @@ export default function ListingPage() {
     const [listing, setListing] = useState()
     const [comments, setComments] = useState()
     const [newComment, setNewComment] = useState()
+
+    let userRating = listing?.ratings.find((rating) => rating.rated_by === userInfo?.user_id)
+
     function formatTime(timeStamp){
         return new Date(timeStamp).toLocaleString()
     }
@@ -71,12 +75,29 @@ export default function ListingPage() {
         dispatch(setMessageModalOpen(true))
     }
 
-    function handleRating(rating){
-        dispatch(ratePost({id, rating}))
+    async function handleRating(rating){
+        if (!isLogged) {
+            navigate('/login')
+            return
+        }
+        await dispatch(ratePost({id, rating}))
+        getListing()
     }
 
     if (!listing) {
         return <h2 className="mt-3">Loading ...</h2>
+    }
+
+    function imgRating() {
+        let image = unrated
+        if (listing.current_rating === 1) {
+            image = under
+        } else if (listing.current_rating === 2) {
+            image = fair
+        } else if (listing.current_rating === 3) {
+            image = over  
+        }
+        return image
     }
 
     const {id, title, imageUrl, brand, modelYear, mileage, price, author, added} = listing
@@ -110,8 +131,22 @@ export default function ListingPage() {
                                     }
                                 </div>
                                 <div className="dropdown d-flex flex-column align-items-center" onClick={(e) => e.stopPropagation()}>
-                                    <img className="ms-4 mt-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={fair} width={120} height={80}/>
-                                    <h6 className="ms-4"><strong>Rate listing <i className="bi bi-hand-index"></i></strong> </h6>
+                                    <img className="ms-4 mt-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={120} height={80}/>
+                                    {userRating ?
+                                        <div>
+                                            <h6 className="ms-4"><strong>You rated:</strong></h6>
+                                            {userRating.rating === 1 ?
+                                                <h6 className="ms-4 text-success">Underpriced</h6>
+                                            : 
+                                                userRating.rating === 2 ?
+                                                    <h6 className="ms-4 text-warning">Fair Value</h6>
+                                                : 
+                                                    <h6 className="ms-4 text-danger">Overpriced</h6>
+                                            }
+                                        </div>
+                                    :
+                                        <h6 className="ms-4"><strong>Rate listing <i className="bi bi-hand-index"></i></strong></h6>
+                                    }
                                     <ul className="dropdown-menu no-min-width-pc">
                                         <li><div className="dropdown-item text-success" onClick={() => handleRating(1)}>Underpriced</div></li>
                                         <li><div className="dropdown-item text-warning" onClick={() => handleRating(2)}>Fair Value</div></li>
@@ -124,7 +159,7 @@ export default function ListingPage() {
                             <div className="d-flex flex-column">
                                 <h5><strong>{title}</strong></h5>
                                 <h5>
-                                    <strong className="text-danger"> {price} EUR</strong>
+                                    <strong className="text-danger"> {price} EUR small</strong>
                                     {favouritedPosts.split(',').includes(`${id}`) ?
                                         <i className="bi bi-star-fill ms-3 text-danger star-hover" onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
                                     :
@@ -138,8 +173,22 @@ export default function ListingPage() {
                                 <p className="card-text"><small className="text-body-secondary">{formatTime(added)}</small></p>
                             </div>
                             <div className="dropdown d-flex flex-column align-items-center" onClick={(e) => e.stopPropagation()}>
-                                <img className="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={fair} width={90} height={60}/>
-                                <h6><strong>Rate listing <i className="bi bi-hand-index"></i></strong> </h6>
+                                <img className="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={90} height={60}/>
+                                {userRating ?
+                                    <div>
+                                        <h6><strong>You rated:</strong></h6>
+                                        {userRating.rating === 1 ?
+                                            <h6 className=" text-success">Underpriced</h6>
+                                        : 
+                                            userRating.rating === 2 ?
+                                                <h6 className="text-warning">Fair Value</h6>
+                                            : 
+                                                <h6 className="text-danger">Overpriced</h6>
+                                        }
+                                    </div>
+                                :
+                                    <h6><strong>Rate listing <i className="bi bi-hand-index"></i></strong></h6>
+                                }
                                 <ul className="dropdown-menu no-min-width-mobile">
                                     <li><div className="dropdown-item text-success" onClick={() => handleRating(1)}>Underpriced</div></li>
                                     <li><div className="dropdown-item text-warning" onClick={() => handleRating(2)}>Fair Value</div></li>
