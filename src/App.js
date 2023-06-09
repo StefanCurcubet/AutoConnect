@@ -11,6 +11,7 @@ import NewListingPage from './Pages/NewListingPage';
 import ListingPage from './Pages/ListingPage';
 import MessagingPage from './Pages/MessagingPage';
 import { getConversations } from './Features/messagingSlice';
+import UserPage from './Pages/UserPage';
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
           <Route path='/favourites' element={<FavouritesPage />} />
           <Route path='/newListing' element={<NewListingPage />} />
           <Route path='/messaging' element={<MessagingPage />} />
+          <Route path='/viewUser/:userName' element={<UserPage />} />
         </Routes>
       </BrowserRouter>
     </>

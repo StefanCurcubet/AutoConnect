@@ -6,6 +6,7 @@ import over from '../Images/listing-rating-over.png'
 import under from '../Images/listing-rating-under.png'
 import unrated from '../Images/listing-rating-unrated.png'
 import { getAllPosts, ratePost } from "../Features/browseSlice";
+import { Link } from "react-router-dom";
 
 export default function Post({postData}){
 
@@ -71,7 +72,7 @@ export default function Post({postData}){
                             <p className="card-text">{brand}</p>
                             <p className="card-text">{modelYear}</p>
                             <p className="card-text">{mileage} km</p>
-                            <p className="card-text">Added by: {author} </p>
+                            <p className="card-text" onClick={(e) => e.stopPropagation()}>Added by: <Link to={`/viewUser/${author}`} >{author}</Link></p>
                             <p className="card-text"><small className="text-body-secondary">{formatTime(added)}</small></p>
                             </div>
                             <h5 className="d-flex flex-column align-items-center">
@@ -123,10 +124,10 @@ export default function Post({postData}){
                                 <p className="card-text">{brand}</p>
                                 <p className="card-text">{modelYear}</p>
                                 <p className="card-text">{mileage} km</p>
-                                <p className="card-text">Added by: {author} </p>
+                                <p className="card-text" onClick={(e) => e.stopPropagation()}>Added by: <Link to={`/viewUser/${author}`} >{author}</Link></p>
                                 <p className="card-text"><small className="text-body-secondary">{formatTime(added)}</small></p>
                             </div>
-                            <div className="dropdown d-flex flex-column align-items-center" onClick={(e) => e.stopPropagation()}>
+                            <div className="dropdown d-flex flex-column align-items-center ms-auto" onClick={(e) => e.stopPropagation()}>
                                 <img className="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={90} height={60}/>
                                 {userRating ?
                                     <div>

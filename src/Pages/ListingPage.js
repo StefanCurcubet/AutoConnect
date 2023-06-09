@@ -118,7 +118,7 @@ export default function ListingPage() {
                             <p className="card-text">{brand}</p>
                             <p className="card-text">{modelYear}</p>
                             <p className="card-text">{mileage} km</p>
-                            <p className="card-text">Added by: {author} </p>
+                            <p className="card-text" onClick={(e) => e.stopPropagation()}>Added by: <Link to={`/viewUser/${author}`} >{author}</Link></p>
                             <p className="card-text"><small className="text-body-secondary">{formatTime(added)}</small></p>
                             </div>
                             <h5 className="d-flex flex-column align-items-center">
@@ -169,7 +169,7 @@ export default function ListingPage() {
                                 <p className="card-text">{brand}</p>
                                 <p className="card-text">{modelYear}</p>
                                 <p className="card-text">{mileage} km</p>
-                                <p className="card-text">Added by: {author} </p>
+                                <p className="card-text" onClick={(e) => e.stopPropagation()}>Added by: <Link to={`/viewUser/${author}`} >{author}</Link></p>
                                 <p className="card-text"><small className="text-body-secondary">{formatTime(added)}</small></p>
                             </div>
                             <div className="dropdown d-flex flex-column align-items-center" onClick={(e) => e.stopPropagation()}>
