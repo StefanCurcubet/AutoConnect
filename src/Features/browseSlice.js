@@ -25,7 +25,6 @@ export const getAllPosts = createAsyncThunk('browse/getAllPosts', (_, thunkAPI) 
 })
 
 export const ratePost = createAsyncThunk('browse/ratePost', async ({id, rating}) => {
-    console.log(id, rating);
     const {access} = JSON.parse(localStorage.getItem('authTokens'))
     const response = await fetch (`http://127.0.0.1:8000/rateListing/${id}/${rating}`, {
         method: 'POST',

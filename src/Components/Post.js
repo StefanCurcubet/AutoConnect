@@ -17,7 +17,6 @@ export default function Post({postData}){
 
     let userRating = ratings.find((rating) => rating.rated_by === userInfo?.user_id)
    
-    console.log(userRating);
     function formatTime(timeStamp){
         return new Date(timeStamp).toLocaleString()
     }
