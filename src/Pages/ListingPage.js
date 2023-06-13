@@ -131,7 +131,7 @@ export default function ListingPage() {
                                     }
                                 </div>
                                 <div className="dropdown d-flex flex-column align-items-center" onClick={(e) => e.stopPropagation()}>
-                                    <img className="ms-4 mt-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={120} height={80}/>
+                                    <img className="ms-4 mt-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={95} height={80}/>
                                     {userRating ?
                                         <div>
                                             <h6 className="ms-4"><strong>You rated:</strong></h6>
@@ -173,7 +173,7 @@ export default function ListingPage() {
                                 <p className="card-text"><small className="text-body-secondary">{formatTime(added)}</small></p>
                             </div>
                             <div className="dropdown d-flex flex-column align-items-center" onClick={(e) => e.stopPropagation()}>
-                                <img className="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={90} height={60}/>
+                                <img className="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={75} height={60}/>
                                 {userRating ?
                                     <div>
                                         <h6><strong>You rated:</strong></h6>
