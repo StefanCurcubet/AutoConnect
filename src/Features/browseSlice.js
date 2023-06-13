@@ -13,6 +13,10 @@ const initialState = {
         mileage_from: "",
         mileage_until: "",
     },
+    deleteModal: {
+        open: false,
+        selectedPost : '',
+    },
     isLoading : true
 }
 
@@ -28,6 +32,24 @@ export const ratePost = createAsyncThunk('browse/ratePost', async ({id, rating})
     const {access} = JSON.parse(localStorage.getItem('authTokens'))
     const response = await fetch (`http://127.0.0.1:8000/rateListing/${id}/${rating}`, {
         method: 'POST',
+        headers: {
+            'Content-Type' : 'application/json',
+            'Authorization' : `Bearer ${access}`,
+        }
+    })
+    if (response.status === 200) {
+        return response.json()
+    } else {
+        const data = await response.json()
+        throw new Error(filterMessage(JSON.stringify(data)))
+    }
+})
+
+export const deletePost = createAsyncThunk(`browse/deletePost/`, async (_,thunkAPI) => {
+    const {access} = JSON.parse(localStorage.getItem('authTokens'))
+    const {selectedPost} = thunkAPI.getState().browse.deleteModal
+    const response = await fetch (`http://127.0.0.1:8000/deleteListing/${selectedPost}`, {
+        method: 'DELETE',
         headers: {
             'Content-Type' : 'application/json',
             'Authorization' : `Bearer ${access}`,
@@ -58,6 +80,12 @@ const browseSlice = createSlice({
         selectPost: (state, action) => {
             console.log(action.payload);
             state.selectedPostId = action.payload
+        },
+        setDeleteModalOpen: (state, action) => {
+            state.deleteModal.open = action.payload
+        },
+        setDeletePost: (state,action) => {
+            state.deleteModal.selectedPost = action.payload
         }
     },
     extraReducers:{
@@ -70,9 +98,19 @@ const browseSlice = createSlice({
         },
         [getAllPosts.rejected]: (state) =>{
             state.isLoading = false
+        },
+        [deletePost.pending]: (state) =>{
+            state.isLoading = true
+        },
+        [deletePost.fulfilled]: (state, action) =>{
+            state.isLoading = false
+            state.deleteModal.open = false
+        },
+        [deletePost.rejected]: (state) =>{
+            state.isLoading = false
         }
     }
 })
 
-export const {setOrderby, setFilter, clearFilters, selectPost} = browseSlice.actions
+export const {setOrderby, setFilter, clearFilters, selectPost, setDeleteModalOpen, setDeletePost} = browseSlice.actions
 export default browseSlice.reducer

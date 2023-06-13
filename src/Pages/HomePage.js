@@ -12,8 +12,6 @@ export default function HomePage() {
     const dispatch = useDispatch()
     const {allPosts, orderby, filter, isLoading} = useSelector((store) => store.browse)
 
-    console.log(allPosts);
-
     useEffect(() => {
         dispatch(getAllPosts())
         if (localStorage.getItem('authTokens')){

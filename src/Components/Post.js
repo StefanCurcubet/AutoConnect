@@ -1,17 +1,19 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getFavourites, toggleFavourite } from "../Features/userSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import fair from '../Images/listing-rating-fair.png'
 import over from '../Images/listing-rating-over.png'
 import under from '../Images/listing-rating-under.png'
 import unrated from '../Images/listing-rating-unrated.png'
-import { getAllPosts, ratePost } from "../Features/browseSlice";
+import { getAllPosts, ratePost, setDeleteModalOpen, setDeletePost } from "../Features/browseSlice";
 import { Link } from "react-router-dom";
+import RatingStars from "./RatingStars";
 
 export default function Post({postData}){
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const {userName} = useParams()
     const {favouritedPosts, isLogged, userInfo} = useSelector((store) => store.user)
     const {id, title, imageUrl, brand, modelYear, mileage, price,current_rating, author, added, ratings} = postData
 
@@ -72,7 +74,13 @@ export default function Post({postData}){
                             <p className="card-text">{modelYear}</p>
                             <p className="card-text">{mileage} km</p>
                             <p className="card-text" onClick={(e) => e.stopPropagation()}>Added by: <Link to={`/viewUser/${author}`} >{author}</Link></p>
+                            <RatingStars user_rating={selectedUser?.current_rating} nr_ratings={selectedUser?.ratings.length}/>
                             <p className="card-text"><small className="text-body-secondary">{formatTime(added)}</small></p>
+                            {isLogged && userInfo.username === userName ?
+                                <button className="btn btn-danger me-auto" onClick={(e) => (e.stopPropagation(), dispatch(setDeleteModalOpen(true)), dispatch(setDeletePost(id)))}>Delete listing</button>
+                            : 
+                                null
+                            }
                             </div>
                             <h5 className="d-flex flex-column align-items-center">
                                 <div>
@@ -84,7 +92,7 @@ export default function Post({postData}){
                                     }
                                 </div>
                                 <div className="dropdown d-flex flex-column align-items-center" onClick={(e) => e.stopPropagation()}>
-                                    <img className="ms-4 mt-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={120} height={80}/>
+                                    <img className="ms-4 mt-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={95} height={80}/>
                                     {userRating ?
                                         <div>
                                             <h6 className="ms-4"><strong>You rated:</strong></h6>
@@ -125,9 +133,14 @@ export default function Post({postData}){
                                 <p className="card-text">{mileage} km</p>
                                 <p className="card-text" onClick={(e) => e.stopPropagation()}>Added by: <Link to={`/viewUser/${author}`} >{author}</Link></p>
                                 <p className="card-text"><small className="text-body-secondary">{formatTime(added)}</small></p>
+                                {isLogged && userInfo.username === userName ?
+                                    <button className="btn btn-danger me-auto" onClick={(e) => (e.stopPropagation(), dispatch(setDeleteModalOpen(true)), dispatch(setDeletePost(id)))}>Delete listing</button>
+                                : 
+                                    null
+                                }
                             </div>
                             <div className="dropdown d-flex flex-column align-items-center ms-auto" onClick={(e) => e.stopPropagation()}>
-                                <img className="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={90} height={60}/>
+                                <img className="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={75} height={60}/>
                                 {userRating ?
                                     <div>
                                         <h6><strong>You rated:</strong></h6>

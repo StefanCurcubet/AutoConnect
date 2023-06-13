@@ -5,6 +5,7 @@ import MessageModal from "../Components/MessageModal"
 import { setMessageModalOpen } from "../Features/messagingSlice"
 import Post from "../Components/Post"
 import RatingStars from "../Components/RatingStars"
+import DeleteListingModal from "../Components/DeleteListingModal"
 
 export default function UserPage() {
 
@@ -13,8 +14,6 @@ export default function UserPage() {
     const [selectedUser, setSelectedUser] = useState()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
-    console.log(selectedUser);
 
     function formatTime(timeStamp){
         return new Date(timeStamp).toLocaleDateString()
@@ -61,33 +60,36 @@ export default function UserPage() {
                 <RatingStars user_rating={selectedUser?.current_rating} nr_ratings={selectedUser?.ratings.length}/>
                 <h3 className="ms-2">Date Joined: {formatTime(selectedUser?.date_joined)}</h3>
                 <div className="d-flex">
-                    <button className="btn btn-outline-primary ms-2 me-2 mb-2" onClick={() => dispatch(setMessageModalOpen(true))}>
-                        Message User
-                    </button>
                     {
                         userInfo?.username === userName ? null :
-                        <div className="dropdown me-auto">
-                            <button className="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {userRating ?
-                                        <>
-                                            You rated {userRating.rating}
-                                            ({<i className="bi bi-star-fill text-outline-warning"></i>})
-                                        </>
-                                    : 
-                                        "Rate User:"
-                                }
+                        <>
+                            <button className="btn btn-outline-primary ms-2 me-2 mb-2" onClick={() => dispatch(setMessageModalOpen(true))}>
+                                Message User
                             </button>
-                            <ul className="dropdown-menu">
-                                <li><div className="dropdown-item" onClick={() => handleRating(1)}><i className="bi bi-star-fill text-warning"></i></div></li>
-                                <li><div className="dropdown-item" onClick={() => handleRating(2)} ><i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i></div></li>
-                                <li><div className="dropdown-item" onClick={() => handleRating(3)} ><i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i></div></li>
-                                <li><div className="dropdown-item" onClick={() => handleRating(4)} ><i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i></div></li>
-                                <li><div className="dropdown-item" onClick={() => handleRating(5)} ><i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i></div></li>
-                            </ul>
-                        </div>
+                            <div className="dropdown me-auto">
+                                <button className="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {userRating ?
+                                            <>
+                                                You rated {userRating.rating}
+                                                ({<i className="bi bi-star-fill text-outline-warning"></i>})
+                                            </>
+                                        : 
+                                            "Rate User:"
+                                    }
+                                </button>
+                                <ul className="dropdown-menu">
+                                    <li><div className="dropdown-item" onClick={() => handleRating(1)}><i className="bi bi-star-fill text-warning"></i></div></li>
+                                    <li><div className="dropdown-item" onClick={() => handleRating(2)} ><i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i></div></li>
+                                    <li><div className="dropdown-item" onClick={() => handleRating(3)} ><i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i></div></li>
+                                    <li><div className="dropdown-item" onClick={() => handleRating(4)} ><i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i></div></li>
+                                    <li><div className="dropdown-item" onClick={() => handleRating(5)} ><i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i> <i className="bi bi-star-fill text-warning"></i></div></li>
+                                </ul>
+                            </div>
+                        </>
                     }
                 </div>
                 <MessageModal recipient={userName} />
+                <DeleteListingModal getSelectedUser={getSelectedUser()}/>
             </div>
             <h2 className="text-center">Listings</h2>
             {user_listings}

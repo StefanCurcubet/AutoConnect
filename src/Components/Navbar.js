@@ -16,8 +16,27 @@ export default function Navbar() {
                 <i className="bi bi-list"></i>
             </button>
             <div className="ms-auto me-2 me-sm-5 d-flex align-items-center d-md-none">
-                <i className="bi bi-person-circle me-1"></i>
-                <h6 className="m-0">{userInfo ? userInfo.username : "Guest"}</h6>
+                {userInfo ? 
+                    <div className="dropdown">
+                        <div className="dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i className="bi bi-person-circle me-1"></i>
+                            <h6 className="m-0">{userInfo.username}</h6>
+                        </div>
+                        <ul className="dropdown-menu dropdown-menu-end">
+                            <li className="nav-link ps-3" style={{cursor: 'pointer'}}>
+                                <Link to={`/viewUser/${userInfo.username}`} className="nav-link p-2" style={{cursor: 'pointer'}}>
+                                    My Profile
+                                </Link>
+                            </li>
+                            <li className="nav-link ps-3" style={{cursor: 'pointer'}} onClick={() => {dispatch(logout()); navigate('/')}}> Log out</li>
+                        </ul>
+                    </div>
+                :
+                    <>
+                        <i className="bi bi-person-circle me-1"></i>
+                        <h6 className="m-0">Guest</h6>
+                    </>
+                }
             </div>
             <div className="collapse navbar-collapse" id="navbarContent">
                 <a className="nav-link p-2" href="/">Browse</a>
@@ -35,7 +54,6 @@ export default function Navbar() {
                         </Link>
                         {conversations.find((conversation) => conversation.update_from !== userInfo.username && conversation.update_from !== '') ? <i className="bi bi-exclamation-circle ms-negative text-primary"></i> : null}
                     </div>
-                    <div className="nav-link p-2" style={{cursor: 'pointer'}} onClick={() => {dispatch(logout()); navigate('/')}}>Log out</div>
                 </>
                     :
                     <Link to={'/login'} className="nav-link p-2" style={{cursor: 'pointer'}}>
@@ -44,8 +62,27 @@ export default function Navbar() {
                 }
             </div>
             <div className="ms-auto me-2 me-sm-5 d-flex align-items-center d-none d-md-flex">
-                <i className="bi bi-person-circle me-1"></i>
-                <h6 className="m-0">{userInfo ? userInfo.username : "Guest"}</h6>
+                {userInfo ? 
+                    <div className="dropdown">
+                        <div className="dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i className="bi bi-person-circle me-1"></i>
+                            <h6 className="m-0">{userInfo.username}</h6>
+                        </div>
+                        <ul className="dropdown-menu dropdown-menu-end">
+                            <li className="nav-link ps-3" style={{cursor: 'pointer'}}>
+                                <Link to={`/viewUser/${userInfo.username}`} className="nav-link p-2" style={{cursor: 'pointer'}}>
+                                    My Profile
+                                </Link>
+                            </li>
+                            <li className="nav-link ps-3" style={{cursor: 'pointer'}} onClick={() => {dispatch(logout()); navigate('/')}}> Log out</li>
+                        </ul>
+                    </div>
+                :
+                    <>
+                        <i className="bi bi-person-circle me-1"></i>
+                        <h6 className="m-0">Guest</h6>
+                    </>
+                }
             </div>
         </nav>
     )
