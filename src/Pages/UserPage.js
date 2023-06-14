@@ -43,7 +43,7 @@ export default function UserPage() {
             return
         }
         await rateUser(rating)
-        getSelectedUser()
+        await getSelectedUser()
         dispatch(getAllSellerRatings())
     }
 
