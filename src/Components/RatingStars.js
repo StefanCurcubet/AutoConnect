@@ -1,6 +1,16 @@
-export default function RatingStars({user_rating, nr_ratings}) {
-    let rating = user_rating
+import { useSelector } from "react-redux"
+
+export default function RatingStars({author}) {
+
+    const {allSellerRatings} = useSelector((store) => store.browse)
+    let rating = 0
+    let rating_count = 0
     let stars = []
+
+    const seller = allSellerRatings?.find((seller) => seller.username === author)
+    rating = seller?.current_rating
+    rating_count = seller?.nr_ratings
+ 
 
     for (let i = 0; i < 5; ++i) {
         if (rating >= 1) {
@@ -15,8 +25,8 @@ export default function RatingStars({user_rating, nr_ratings}) {
     }
 
     return (
-        <div className="ms-2">
-           {stars} {nr_ratings === 0 ? "Unrated" : `(${nr_ratings})`}
+        <div className="">
+           {stars} {rating_count === 0 ? "Unrated" : `(${rating_count})`}
         </div>
     )
 }

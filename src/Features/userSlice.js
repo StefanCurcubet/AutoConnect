@@ -92,6 +92,7 @@ export const getFavourites = createAsyncThunk('user/getFavourite', async () => {
      }
 })
 
+
 const userSlice = createSlice({
     name : 'userSlice',
     initialState,
@@ -160,7 +161,7 @@ const userSlice = createSlice({
             alert(action.error.message)
             userSlice.caseReducers.logout(state)
             state.isLoading = false
-        }
+        },
     }
 })
 

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllPosts } from "../Features/browseSlice";
 import checkFilter from "../Utils/checkFilter";
 import { getFavourites } from "../Features/userSlice";
+import { getAllSellerRatings } from "../Features/browseSlice";
 
 export default function HomePage() {
 
@@ -14,6 +15,7 @@ export default function HomePage() {
 
     useEffect(() => {
         dispatch(getAllPosts())
+        dispatch(getAllSellerRatings())
         if (localStorage.getItem('authTokens')){
             dispatch(getFavourites())
         }

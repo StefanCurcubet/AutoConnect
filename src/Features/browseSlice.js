@@ -3,6 +3,7 @@ import filterMessage from "../Utils/filterMessage";
 
 const initialState = {
     allPosts : [],
+    allSellerRatings:[],
     orderby : '-added',
     filter : {
         make: "",
@@ -37,6 +38,26 @@ export const ratePost = createAsyncThunk('browse/ratePost', async ({id, rating})
             'Authorization' : `Bearer ${access}`,
         }
     })
+    if (response.status === 200) {
+        return response.json()
+    } else {
+        const data = await response.json()
+        throw new Error(filterMessage(JSON.stringify(data)))
+    }
+})
+
+export const getAllSellerRatings = createAsyncThunk('browse/getAllSellerRatings', async() => {
+    const response = await fetch('http://127.0.0.1:8000/getAllSellerRatings/')
+    if (response.status === 200) {
+        return response.json()
+    } else {
+        const data = await response.json()
+        throw new Error(filterMessage(JSON.stringify(data)))
+    }
+})
+
+export const getSellerRating = createAsyncThunk('browse/getSellerRating', async(username) => {
+    const response = await fetch(`http://127.0.0.1:8000/getSellerRating/${username}`)
     if (response.status === 200) {
         return response.json()
     } else {
@@ -107,6 +128,16 @@ const browseSlice = createSlice({
             state.deleteModal.open = false
         },
         [deletePost.rejected]: (state) =>{
+            state.isLoading = false
+        },
+        [getAllSellerRatings.pending]: (state) => {
+            state.isLoading = true
+        },
+        [getAllSellerRatings.fulfilled]: (state, action) => {
+            state.allSellerRatings = action.payload
+            state.isLoading = false
+        },
+        [getAllSellerRatings.rejected]: (state) => {
             state.isLoading = false
         }
     }

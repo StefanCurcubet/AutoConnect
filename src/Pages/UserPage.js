@@ -6,11 +6,12 @@ import { setMessageModalOpen } from "../Features/messagingSlice"
 import Post from "../Components/Post"
 import RatingStars from "../Components/RatingStars"
 import DeleteListingModal from "../Components/DeleteListingModal"
+import { getAllSellerRatings } from "../Features/browseSlice"
 
 export default function UserPage() {
-
     const {userName} = useParams()
     const {isLogged, userInfo} = useSelector((store) => store.user)
+    const {allSellerRatings} = useSelector((store) => store.browse)
     const [selectedUser, setSelectedUser] = useState()
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -27,14 +28,13 @@ export default function UserPage() {
 
     async function rateUser(rating) {
         const {access} = JSON.parse(localStorage.getItem('authTokens'))
-        const response = await fetch(`http://127.0.0.1:8000/rateSeller/${userName}/${rating}`,{
+        fetch(`http://127.0.0.1:8000/rateSeller/${userName}/${rating}`,{
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/json',
                 'Authorization' : `Bearer ${access}`,
             },
         })
-        console.log(response.json()); 
     }
 
     async function handleRating(rating) {
@@ -44,20 +44,24 @@ export default function UserPage() {
         }
         await rateUser(rating)
         getSelectedUser()
+        dispatch(getAllSellerRatings())
     }
 
     useEffect(() => {
         getSelectedUser()
+        if (allSellerRatings.length === 0) { // only gets all ratings again if user refreshes page
+            dispatch(getAllSellerRatings())
+        }
     },[])
 
-    let userRating = selectedUser?.ratings.find((rating) => rating.rated_by === userInfo?.user_id)
+    let userRating = selectedUser?.ratings.find((rating) => rating.rated_by === userInfo?.user_id) // refers to the logged on users rating of the seller/user he is viewing
     let user_listings = selectedUser?.listings.map((listing) => <Post key={listing.id} postData={listing} />)
 
     return (
         <>
             <div className="container-fluid bg-body-tertiary d-flex justify-content-center flex-column">
                 <h1 className="mt-3 ms-2"><span>{selectedUser?.username}</span></h1>
-                <RatingStars user_rating={selectedUser?.current_rating} nr_ratings={selectedUser?.ratings.length}/>
+                <div className="ms-2"><RatingStars author={userName} /></div>
                 <h3 className="ms-2">Date Joined: {formatTime(selectedUser?.date_joined)}</h3>
                 <div className="d-flex">
                     {
@@ -89,7 +93,7 @@ export default function UserPage() {
                     }
                 </div>
                 <MessageModal recipient={userName} />
-                <DeleteListingModal getSelectedUser={getSelectedUser()}/>
+                <DeleteListingModal getSelectedUser={getSelectedUser}/>
             </div>
             <h2 className="text-center">Listings</h2>
             {user_listings}

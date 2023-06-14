@@ -9,7 +9,8 @@ import fair from '../Images/listing-rating-fair.png';
 import over from '../Images/listing-rating-over.png';
 import under from '../Images/listing-rating-under.png';
 import unrated from '../Images/listing-rating-unrated.png'
-import { ratePost } from "../Features/browseSlice";
+import { getAllSellerRatings, ratePost } from "../Features/browseSlice";
+import RatingStars from "../Components/RatingStars";
 
 export default function ListingPage() {
 
@@ -17,6 +18,7 @@ export default function ListingPage() {
     const navigate = useNavigate()
     const {listingId} = useParams()
     const {favouritedPosts, isLogged, userInfo} = useSelector((store) => store.user)
+    const {allSellerRatings} = useSelector((store) => store.browse)
     const [listing, setListing] = useState()
     const [comments, setComments] = useState()
     const [newComment, setNewComment] = useState()
@@ -60,6 +62,9 @@ export default function ListingPage() {
     useEffect(() => {
         getListing()
         getComments()
+        if (allSellerRatings.length === 0) { // only gets all ratings again if user refreshes page
+            dispatch(getAllSellerRatings())
+        }
     },[])
 
     async function updateFavourite(id) {
@@ -118,8 +123,9 @@ export default function ListingPage() {
                             <p className="card-text">{brand}</p>
                             <p className="card-text">{modelYear}</p>
                             <p className="card-text">{mileage} km</p>
-                            <p className="card-text" onClick={(e) => e.stopPropagation()}>Added by: <Link to={`/viewUser/${author}`} >{author}</Link></p>
-                            <p className="card-text"><small className="text-body-secondary">{formatTime(added)}</small></p>
+                            <p className="card-text mb-0" onClick={(e) => e.stopPropagation()}>Added by: <Link to={`/viewUser/${author}`} >{author}</Link></p>
+                            <RatingStars author={author} />
+                            <p className="card-text mt-2"><small className="text-body-secondary">{formatTime(added)}</small></p>
                             </div>
                             <h5 className="d-flex flex-column align-items-center">
                                 <div>
@@ -169,8 +175,9 @@ export default function ListingPage() {
                                 <p className="card-text">{brand}</p>
                                 <p className="card-text">{modelYear}</p>
                                 <p className="card-text">{mileage} km</p>
-                                <p className="card-text" onClick={(e) => e.stopPropagation()}>Added by: <Link to={`/viewUser/${author}`} >{author}</Link></p>
-                                <p className="card-text"><small className="text-body-secondary">{formatTime(added)}</small></p>
+                                <p className="card-text mb-0" onClick={(e) => e.stopPropagation()}>Added by: <Link to={`/viewUser/${author}`} >{author}</Link></p>
+                                <RatingStars author={author} /> 
+                                <p className="card-text mt-2"><small className="text-body-secondary">{formatTime(added)}</small></p>
                             </div>
                             <div className="dropdown d-flex flex-column align-items-center" onClick={(e) => e.stopPropagation()}>
                                 <img className="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={75} height={60}/>
@@ -222,10 +229,10 @@ export default function ListingPage() {
                         </div>
                     </div>
                 :
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Hello, Guest</h5>
-                            <p class="card-text">Log in to join the conversation.</p>
+                    <div className="card text-center">
+                        <div className="card-body">
+                            <h5 className="card-title">Hello, Guest</h5>
+                            <p className="card-text">Log in to join the conversation.</p>
                             <Link to={'/login'} className="btn btn-primary" >
                                 Log in
                             </Link>

@@ -23,11 +23,9 @@ export default function Navbar() {
                             <h6 className="m-0">{userInfo.username}</h6>
                         </div>
                         <ul className="dropdown-menu dropdown-menu-end">
-                            <li className="nav-link ps-3" style={{cursor: 'pointer'}}>
-                                <Link to={`/viewUser/${userInfo.username}`} className="nav-link p-2" style={{cursor: 'pointer'}}>
-                                    My Profile
-                                </Link>
-                            </li>
+                            <Link to={`/viewUser/${userInfo.username}`} className="nav-link ps-3" style={{cursor: 'pointer'}}>
+                                My Profile
+                            </Link>
                             <li className="nav-link ps-3" style={{cursor: 'pointer'}} onClick={() => {dispatch(logout()); navigate('/')}}> Log out</li>
                         </ul>
                     </div>
@@ -69,11 +67,9 @@ export default function Navbar() {
                             <h6 className="m-0">{userInfo.username}</h6>
                         </div>
                         <ul className="dropdown-menu dropdown-menu-end">
-                            <li className="nav-link ps-3" style={{cursor: 'pointer'}}>
-                                <Link to={`/viewUser/${userInfo.username}`} className="nav-link p-2" style={{cursor: 'pointer'}}>
-                                    My Profile
-                                </Link>
-                            </li>
+                            <Link to={`/viewUser/${userInfo.username}`} className="nav-link ps-3" style={{cursor: 'pointer'}}>
+                                My Profile
+                            </Link>
                             <li className="nav-link ps-3" style={{cursor: 'pointer'}} onClick={() => {dispatch(logout()); navigate('/')}}> Log out</li>
                         </ul>
                     </div>
