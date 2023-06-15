@@ -63,11 +63,13 @@ export default function Post({postData}){
         <div className="card mt-3 card-hover-shadow" onClick={() => handleSelect()}>
             <div className="row g-0">
                 <div className="col-md-4">
-                    <img src={imageUrl} className="img-fluid rounded-start" style={{cursor: 'pointer'}} alt="carImage"/>
+                    <div className="ratio ratio-4x3">
+                        <img src={imageUrl} className="img-fluid rounded-start " style={{cursor: 'pointer'}} alt="carImage"/>
+                    </div>
                 </div>
                 <div className="col-md-8">
                     <div className="card-body">
-                        <div className="card-title mb-4 d-none d-sm-flex justify-content-between" >
+                        <div className="card-title d-none d-sm-flex justify-content-between" >
                             <div className="d-flex flex-column">
                             <h5><strong>{title}</strong></h5>
                             <p className="card-text">{brand}</p>
@@ -126,7 +128,7 @@ export default function Post({postData}){
                                 </div>
                             </h5>
                         </div>
-                        <div className="card-title mb-4 d-sm-none d-flex flex-between" >
+                        <div className="card-title d-sm-none d-flex flex-between" >
                             <div className="d-flex flex-column">
                                 <h5><strong>{title}</strong></h5>
                                 <h5>
