@@ -12,9 +12,11 @@ export default function UserPage() {
     const {userName} = useParams()
     const {isLogged, userInfo} = useSelector((store) => store.user)
     const {allSellerRatings} = useSelector((store) => store.browse)
-    const [selectedUser, setSelectedUser] = useState()
+    const [selectedUserData, setSelectedUserData] = useState()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    console.log(selectedUserData);
 
     function formatTime(timeStamp){
         return new Date(timeStamp).toLocaleDateString()
@@ -23,12 +25,12 @@ export default function UserPage() {
     async function getSelectedUser() {
         const response = await fetch(`http://127.0.0.1:8000/getUser/${userName}`)
         const data = await response.json()
-        setSelectedUser(data)
+        setSelectedUserData(data)
     }
 
     async function rateUser(rating) {
         const {access} = JSON.parse(localStorage.getItem('authTokens'))
-        fetch(`http://127.0.0.1:8000/rateSeller/${userName}/${rating}`,{
+        await fetch(`http://127.0.0.1:8000/rateSeller/${userName}/${rating}`,{
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/json',
@@ -52,17 +54,17 @@ export default function UserPage() {
         if (allSellerRatings.length === 0) { // only gets all ratings again if user refreshes page
             dispatch(getAllSellerRatings())
         }
-    },[])
+    },[userName])
 
-    let userRating = selectedUser?.ratings.find((rating) => rating.rated_by === userInfo?.user_id) // refers to the logged on users rating of the seller/user he is viewing
-    let user_listings = selectedUser?.listings.map((listing) => <Post key={listing.id} postData={listing} />)
+    let userRating = selectedUserData?.ratings.find((rating) => rating.rated_by === userInfo?.user_id) // refers to the logged on users rating of the seller/user he is viewing
+    let user_listings = selectedUserData?.listings.map((listing) => <Post key={listing.id} postData={listing} />)
 
     return (
         <>
             <div className="container-fluid bg-body-tertiary d-flex justify-content-center flex-column">
-                <h1 className="mt-3 ms-2"><span>{selectedUser?.username}</span></h1>
+                <h1 className="mt-3 ms-2"><span>{selectedUserData?.username === userInfo?.username ? "My Profile" : selectedUserData?.username}</span></h1>
                 <div className="ms-2"><RatingStars author={userName} /></div>
-                <h3 className="ms-2">Date Joined: {formatTime(selectedUser?.date_joined)}</h3>
+                <h3 className="ms-2">Date Joined: {formatTime(selectedUserData?.date_joined)}</h3>
                 <div className="d-flex">
                     {
                         userInfo?.username === userName ? null :

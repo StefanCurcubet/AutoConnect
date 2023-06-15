@@ -17,8 +17,8 @@ function App() {
 
   const dispatch = useDispatch()
 
-  async function handleStart() {
-    await dispatch(getLocalTokens(JSON.parse(localStorage.getItem('authTokens'))))
+  function handleStart() {
+    dispatch(getLocalTokens(JSON.parse(localStorage.getItem('authTokens'))))
     dispatch(getConversations())
   }
 
