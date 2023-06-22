@@ -42,6 +42,7 @@ export const loginUser = createAsyncThunk('user/loginUser', async ({username, pa
 });
 
 export const updateTokens = createAsyncThunk('user/updateTokens', async () => {
+    console.log('updated tokens');
     const {refresh} = JSON.parse(localStorage.getItem('authTokens'))
     const response = await fetch('http://127.0.0.1:8000/token/refresh/', {
         method : 'POST',
@@ -135,19 +136,18 @@ const userSlice = createSlice({
             state.isLoading = false
         },
         [updateTokens.rejected]: (state, action) => {
-            alert(action.error.message)
+            alert(action.error.message + 'from tokens')
             userSlice.caseReducers.logout(state)
             state.isLoading = false
         },
         [toggleFavourite.pending]: (state) => {
             state.isLoading = true
         },
-        [toggleFavourite.fulfilled]: (state, action) => {
+        [toggleFavourite.fulfilled]: (state) => {
             state.isLoading = false
         },
-        [toggleFavourite.rejected]: (state, action) => {
+        [toggleFavourite.rejected]: (state) => {
             userSlice.caseReducers.logout(state)
-            alert(action.error.message)
             state.isLoading = false
         },
         [getFavourites.pending]: (state) => {
@@ -157,8 +157,7 @@ const userSlice = createSlice({
             state.favouritedPosts = action.payload.favourited_posts
             state.isLoading = false
         },
-        [getFavourites.rejected]: (state, action) => {
-            alert(action.error.message)
+        [getFavourites.rejected]: (state) => {
             userSlice.caseReducers.logout(state)
             state.isLoading = false
         },

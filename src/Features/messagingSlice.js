@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import filterMessage from "../Utils/filterMessage";
+import { logout } from "./userSlice";
 
 const initialState = {
     conversations : [],
@@ -10,7 +11,7 @@ const initialState = {
     isLoading: false,
 }
 
-export const getConversations = createAsyncThunk('messaging/getConversations', async () => {
+export const getConversations = createAsyncThunk('messaging/getConversations', async (_,{dispatch}) => {
     const {access} = JSON.parse(localStorage.getItem('authTokens'))
     const response = await fetch (`http://127.0.0.1:8000/getConversations/`, {
         method: 'GET',
@@ -22,6 +23,7 @@ export const getConversations = createAsyncThunk('messaging/getConversations', a
     if (response.status === 200) {
         return response.json()
     } else {
+        dispatch(logout())
         const data = await response.json()
         throw new Error(filterMessage(JSON.stringify(data)))
     }
@@ -94,8 +96,7 @@ const messagingSlice = createSlice({
             state.conversations = action.payload
             state.isLoading = false
         },
-        [getConversations.rejected]: (state, action) => {
-            alert(action.error.message)
+        [getConversations.rejected]: (state) => {
             state.isLoading = false
         },
         [getMessages.pending]: (state) => {

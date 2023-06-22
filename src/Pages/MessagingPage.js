@@ -3,19 +3,24 @@ import { useSelector, useDispatch } from "react-redux"
 import ConversationPartner from "../Components/ConversationPartner"
 import Message from "../Components/Message"
 import { getConversations, getMessages } from "../Features/messagingSlice"
+import { useNavigate } from "react-router-dom"
 
 
 export default function MessagingPage() {
 
     const {conversations, messages, selectedConv} = useSelector((store) => store.messaging)
-    const {userInfo} = useSelector((store) => store.user)
+    const {userInfo, isLogged} = useSelector((store) => store.user)
   
     const[reply, setReply] = useState()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const largeScrollRef = useRef()
     const smallScrollRef = useRef()
 
     useEffect(() => {
+        if (!isLogged) {
+            navigate('/')
+        }
         dispatch(getConversations())
     },[])
     

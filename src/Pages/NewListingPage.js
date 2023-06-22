@@ -1,5 +1,8 @@
 import { useState } from "react"
 import PreviewModal from "../Components/PreviewModal"
+import { useSelector } from "react-redux"
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 
 export default function NewListingPage() {
 
@@ -13,6 +16,14 @@ export default function NewListingPage() {
         price : 0,
         imageUrl: ""
     })
+    const {isLogged} = useSelector((store) => store.user)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (!isLogged) {
+            navigate('/')
+        }
+    },[])
 
     function handleSubmit(e) {
         e.preventDefault()

@@ -4,8 +4,8 @@ import HomePage from './Pages/HomePage';
 import AuthPage from './Pages/AuthPage';
 import Navbar from './Components/Navbar';
 import { useEffect } from 'react';
-import { getLocalTokens } from './Features/userSlice';
-import { useDispatch } from 'react-redux';
+import { getLocalTokens, updateTokens } from './Features/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import FavouritesPage from './Pages/FavouritesPage';
 import NewListingPage from './Pages/NewListingPage';
 import ListingPage from './Pages/ListingPage';
@@ -16,6 +16,7 @@ import UserPage from './Pages/UserPage';
 function App() {
 
   const dispatch = useDispatch()
+  const {userInfo, isLogged} = useSelector((store) => store.user)
 
   function handleStart() {
     dispatch(getLocalTokens(JSON.parse(localStorage.getItem('authTokens'))))
@@ -28,6 +29,14 @@ function App() {
     }
   },[])
 
+  useEffect(() => {
+    if (userInfo) {
+      const nineMinutes = 1000 * 60 * 9
+      const updateTokensInterval = setInterval(() => {dispatch(updateTokens())}, nineMinutes)
+      return () => {clearInterval(updateTokensInterval)}
+    }
+  },[userInfo])
+
   return (
     <>
       <BrowserRouter>
@@ -36,10 +45,10 @@ function App() {
           <Route path='/' element={<HomePage />} />
           <Route path='/login' element={<AuthPage />} />
           <Route path='/viewListing/:listingId' element={<ListingPage />} />
+          <Route path='/viewUser/:userName' element={<UserPage />} />
           <Route path='/favourites' element={<FavouritesPage />} />
           <Route path='/newListing' element={<NewListingPage />} />
           <Route path='/messaging' element={<MessagingPage />} />
-          <Route path='/viewUser/:userName' element={<UserPage />} />
         </Routes>
       </BrowserRouter>
     </>
