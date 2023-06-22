@@ -68,23 +68,23 @@ export default function Post({postData}){
                     </div>
                 </div>
                 <div className="col-md-8">
-                    <div className="card-body">
+                    <div className="card-body pb-2 h-100">
                         {/* Large View */}
-                        <div className="card-title d-none d-sm-flex justify-content-between" >
-                            <div className="d-flex flex-column">
-                            <h5><strong>{title}</strong></h5>
-                            <p className="card-text">{brand}</p>
-                            <p className="card-text">{modelYear}</p>
-                            <p className="card-text">{mileage} km</p>
-                            <p className="card-text mb-0" onClick={(e) => e.stopPropagation()}>Added by: <Link to={`/viewUser/${author}`} >{author}</Link></p>
-                            <RatingStars author={author}/>
-                            <p className="card-text mt-2"><small className="text-body-secondary">{formatTime(added)}</small></p>
-                            <p className="card-text text-secondary mt-auto"><i className="bi bi-chat-left"></i> (0)<i className="bi bi-hand-thumbs-up"></i> (0)</p>
-                            {isLogged && userInfo.username === userName ?
-                                <button className="btn btn-danger me-auto" onClick={(e) => (e.stopPropagation(), dispatch(setDeleteModalOpen(true)), dispatch(setDeletePost(id)))}>Delete listing</button>
-                            : 
-                                null
-                            }
+                        <div className="d-none d-sm-flex justify-content-between h-100" >
+                            <div className="d-flex flex-column h-100">
+                                <h5><strong>{title}</strong></h5>
+                                <p className="card-text mb-1">{brand}</p>
+                                <p className="card-text mb-1">{modelYear}</p>
+                                <p className="card-text mb-1">{mileage} km</p>
+                                <p className="card-text mb-0" onClick={(e) => e.stopPropagation()}>Added by: <Link to={`/viewUser/${author}`} >{author}</Link></p>
+                                <RatingStars author={author}/>
+                                <p className="card-text"><small className="text-body-secondary">{formatTime(added)}</small></p>
+                                <p className="card-text text-body-tertiary mt-auto"><i className="bi bi-chat-left"></i> (0)<i className="bi bi-hand-thumbs-up"></i> (0)</p>
+                                {isLogged && userInfo.username === userName ?
+                                    <button className="btn btn-danger me-auto" onClick={(e) => (e.stopPropagation(), dispatch(setDeleteModalOpen(true)), dispatch(setDeletePost(id)))}>Delete listing</button>
+                                : 
+                                    null
+                                }
                             </div>
                             <h5 className="d-flex flex-column align-items-center">
                                 <div>
