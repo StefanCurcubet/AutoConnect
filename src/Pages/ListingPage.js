@@ -105,8 +105,8 @@ export default function ListingPage() {
         return image
     }
 
-    const {id, title, imageUrl, brand, modelYear, mileage, price, author, added} = listing
-    const commentList = comments?.map((comment) => <Comment key={comment.id} data={comment}/>)
+    const {id, title, imageUrl, brand, modelYear, mileage, price, author, added, ratings} = listing
+    const commentList = comments?.map((comment) => <Comment key={comment.id} data={comment} listingAuthor={author}/>)
 
     return (
         <div className="container-lg" style={{cursor: 'default'}}>
@@ -116,16 +116,18 @@ export default function ListingPage() {
                         <img src={imageUrl} className="img-fluid rounded-start" alt="carImage"/>
                     </div>
                     <div className="col-md-8">
-                    <div className="card-body">
-                        <div className="card-title mb-4 d-none d-sm-flex justify-content-between" >
+                    <div className="card-body pb-1 h-100">
+                        {/* Large View */}
+                        <div className="d-none d-sm-flex justify-content-between h-100" >
                             <div className="d-flex flex-column">
-                            <h5><strong>{title}</strong></h5>
-                            <p className="card-text">{brand}</p>
-                            <p className="card-text">{modelYear}</p>
-                            <p className="card-text">{mileage} km</p>
+                            <h5 className="mb-3"><strong>{title}</strong></h5>
+                            <p className="card-text mb-1">{brand}</p>
+                            <p className="card-text mb-1">{modelYear}</p>
+                            <p className="card-text mb-2">{mileage} km</p>
                             <p className="card-text mb-0" onClick={(e) => e.stopPropagation()}>Added by: <Link to={`/viewUser/${author}`} >{author}</Link></p>
                             <RatingStars author={author} />
                             <p className="card-text mt-2"><small className="text-body-secondary">{formatTime(added)}</small></p>
+                            <p className="card-text text-secondary mt-auto"><i className="bi bi-chat-left"></i> ({comments?.length})<i className="bi bi-hand-thumbs-up"></i> ({ratings?.length})</p>
                             </div>
                             <h5 className="d-flex flex-column align-items-center">
                                 <div>
@@ -161,23 +163,25 @@ export default function ListingPage() {
                                 </div>
                             </h5>
                         </div>
-                        <div className="card-title mb-4 d-sm-none d-flex flex-between" >
+                        {/*Small View */}
+                        <div className="d-sm-none d-flex justify-content-between h-100" >
                             <div className="d-flex flex-column">
                                 <h5><strong>{title}</strong></h5>
                                 <h5>
-                                    <strong className="text-danger"> {price} EUR small</strong>
+                                    <strong className="text-danger"> {price} EUR</strong>
                                     {favouritedPosts.split(',').includes(`${id}`) ?
                                         <i className="bi bi-star-fill ms-3 text-danger star-hover" onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
                                     :
                                         <i className="bi bi-star ms-3 star-hover " onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
                                     }
                                 </h5>
-                                <p className="card-text">{brand}</p>
-                                <p className="card-text">{modelYear}</p>
-                                <p className="card-text">{mileage} km</p>
+                                <p className="card-text mb-1">{brand}</p>
+                                <p className="card-text mb-1">{modelYear}</p>
+                                <p className="card-text mb-2">{mileage} km</p>
                                 <p className="card-text mb-0" onClick={(e) => e.stopPropagation()}>Added by: <Link to={`/viewUser/${author}`} >{author}</Link></p>
                                 <RatingStars author={author} /> 
-                                <p className="card-text mt-2"><small className="text-body-secondary">{formatTime(added)}</small></p>
+                                <p className="card-text"><small className="text-body-secondary">{formatTime(added)}</small></p>
+                                <p className="card-text text-secondary mt-auto"><i className="bi bi-chat-left"></i> ({comments?.length})<i className="bi bi-hand-thumbs-up"></i> ({ratings?.length})</p>
                             </div>
                             <div className="dropdown d-flex flex-column align-items-center" onClick={(e) => e.stopPropagation()}>
                                 <img className="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={75} height={60}/>
@@ -207,7 +211,7 @@ export default function ListingPage() {
                     </div>
                 </div>
             </div>
-            <hr/>
+            <hr className="mt-1"/>
             <button className="btn hover-light no-border mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAddComment" aria-expanded="false">
                 <i className="bi bi-chat-left me-2"></i>
                 Leave a comment

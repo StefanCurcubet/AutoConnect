@@ -14,7 +14,8 @@ export default function NewListingPage() {
         firstRegistration : 0,
         mileage : 0,
         price : 0,
-        imageUrl: ""
+        imageUrl: "",
+        description: ""
     })
     const {isLogged} = useSelector((store) => store.user)
     const navigate = useNavigate()
@@ -86,6 +87,10 @@ export default function NewListingPage() {
                     <div className="col mt-2">
                         <label htmlFor="imageUrl" className="form-label">Image URL</label>
                         <input type="text" className="form-control" id="imageUrl" placeholder="Url link to the image of your car" onChange={(e) => setListingData((prevData) => ({...prevData, imageUrl : e.target.value}))} required/>
+                    </div>
+                    <div className="col mt-2">
+                        <label htmlFor="description" className="form-label">Description</label>
+                        <input type="text" className="form-control" id="description" placeholder="Description of your listing" onChange={(e) => setListingData((prevData) => ({...prevData, description : e.target.value}))} required/>
                     </div>
                     <div className="col mt-3">
                         <button className="btn btn-primary" type="submit">Preview Listing</button>
