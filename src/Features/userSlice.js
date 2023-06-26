@@ -6,7 +6,9 @@ const initialState = {
     userInfo : null,
     favouritedPosts: '',
     isLogged : false,
-    isLoading : true,
+    settings: {},
+    settingsModalOpen : false,
+    isLoading : false,
 }
 
 export const createUser = createAsyncThunk('user/createUser', async ({username, password}) => {
@@ -42,7 +44,6 @@ export const loginUser = createAsyncThunk('user/loginUser', async ({username, pa
 });
 
 export const updateTokens = createAsyncThunk('user/updateTokens', async () => {
-    console.log('updated tokens');
     const {refresh} = JSON.parse(localStorage.getItem('authTokens'))
     const response = await fetch('http://127.0.0.1:8000/token/refresh/', {
         method : 'POST',
@@ -93,6 +94,40 @@ export const getFavourites = createAsyncThunk('user/getFavourite', async () => {
      }
 })
 
+export const getSettings = createAsyncThunk('user/getSettings', async () => {
+    const {access} = JSON.parse(localStorage.getItem('authTokens'))
+    const response = await fetch(`http://127.0.0.1:8000/getSettings`, {
+        method: 'GET',
+        headers: {
+            'Content-Type' : 'application/json',
+            'Authorization' : `Bearer ${access}`,
+        }
+    })
+    if (response.status === 200) {
+        return response.json()
+    } else {
+        const data = await response.json()
+        throw new Error(filterMessage(JSON.stringify(data)))
+    }
+})
+
+export const updateSettings = createAsyncThunk('user/updateSettings', async (modifiedSettings) => {
+    const {access} = JSON.parse(localStorage.getItem('authTokens'))
+    const response = await fetch(`http://127.0.0.1:8000/updateSettings`, {
+        method: 'POST',
+        headers: {
+            'Content-Type' : 'application/json',
+            'Authorization' : `Bearer ${access}`, 
+        },
+        body: JSON.stringify(modifiedSettings)
+    })
+    if (response.status === 200) {
+        return response.json()
+    } else {
+        const data = await response.json()
+        throw new Error(filterMessage(JSON.stringify(data)))
+    }
+})
 
 const userSlice = createSlice({
     name : 'userSlice',
@@ -108,6 +143,9 @@ const userSlice = createSlice({
             state.authTokens = action.payload
             state.userInfo = jwtDecode(action.payload.access)
             state.isLogged = true
+        },
+        setSettingsModal: (state, action) => {
+            state.settingsModalOpen = action.payload
         }
     },
     extraReducers : {
@@ -161,8 +199,29 @@ const userSlice = createSlice({
             userSlice.caseReducers.logout(state)
             state.isLoading = false
         },
+        [getSettings.pending]: (state) => {
+            state.isLoading = true
+        },
+        [getSettings.fulfilled]: (state, action) => {
+            state.settings = action.payload
+            state.isLoading = false
+        },
+        [getSettings.rejected]: (state, action) => {
+            alert(action.payload)
+            state.isLoading = false
+        },
+        [updateSettings.pending]: (state) => {
+            state.isLoading = true
+        },
+        [updateSettings.fulfilled]: (state, action) => {
+            state.isLoading = false
+        },
+        [updateSettings.rejected]: (state, action) => {
+            alert(action.payload)
+            state.isLoading = false
+        },
     }
 })
 
-export const {logout, getLocalTokens} = userSlice.actions
+export const {logout, getLocalTokens, setSettingsModal} = userSlice.actions
 export default userSlice.reducer

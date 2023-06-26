@@ -16,14 +16,12 @@ export default function UserPage() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    console.log(selectedUserData);
-
     function formatTime(timeStamp){
         return new Date(timeStamp).toLocaleDateString()
     }
 
     async function getSelectedUser() {
-        const response = await fetch(`http://127.0.0.1:8000/getUser/${userName}`)
+        const response = await fetch(`http://127.0.0.1:8000/getSeller/${userName}`)
         const data = await response.json()
         setSelectedUserData(data)
     }

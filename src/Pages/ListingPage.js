@@ -23,6 +23,8 @@ export default function ListingPage() {
     const [comments, setComments] = useState()
     const [newComment, setNewComment] = useState()
 
+    console.log(userInfo);
+
     let userRating = listing?.ratings.find((rating) => rating.rated_by === userInfo?.user_id)
 
     function formatTime(timeStamp){
@@ -38,7 +40,6 @@ export default function ListingPage() {
     async function getComments() {
         const response = await fetch(`http://127.0.0.1:8000/getComments/${listingId}`)
         const data = await response.json()
-        console.log(data);
         setComments(data)
     }
 
@@ -127,7 +128,7 @@ export default function ListingPage() {
                             <p className="card-text mb-0" onClick={(e) => e.stopPropagation()}>Added by: <Link to={`/viewUser/${author}`} >{author}</Link></p>
                             <RatingStars author={author} />
                             <p className="card-text mt-2"><small className="text-body-secondary">{formatTime(added)}</small></p>
-                            <p className="card-text text-secondary mt-auto"><i className="bi bi-chat-left"></i> ({comments?.length})<i className="bi bi-hand-thumbs-up"></i> ({ratings?.length})</p>
+                            <p className="card-text text-secondary mt-auto"><i className="bi bi-chat-left"></i> ({comments?.length})<i className="bi bi bi-hand-index"></i> ({ratings?.length})</p>
                             </div>
                             <h5 className="d-flex flex-column align-items-center">
                                 <div>
@@ -139,21 +140,30 @@ export default function ListingPage() {
                                     }
                                 </div>
                                 <div className="dropdown d-flex flex-column align-items-center" onClick={(e) => e.stopPropagation()}>
-                                    <img className="ms-4 mt-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={95} height={80}/>
-                                    {userRating ?
-                                        <div>
-                                            <h6 className="ms-4"><strong>You rated:</strong></h6>
-                                            {userRating.rating === 1 ?
-                                                <h6 className="ms-4 text-success">Underpriced</h6>
-                                            : 
-                                                userRating.rating === 2 ?
-                                                    <h6 className="ms-4 text-warning">Fair Value</h6>
-                                                : 
-                                                    <h6 className="ms-4 text-danger">Overpriced</h6>
-                                            }
-                                        </div>
+                                    {userInfo?.username === author ?
+                                        <>
+                                            <img className="ms-4 mt-2" src={imgRating()} width={95} height={80}/>
+                                            <h6 className="ms-4"><strong>My listing</strong></h6>
+                                        </>
                                     :
-                                        <h6 className="ms-4"><strong>Rate listing <i className="bi bi-hand-index"></i></strong></h6>
+                                        <>
+                                            <img className="ms-4 mt-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={95} height={80}/>
+                                            {userRating ?
+                                                <div>
+                                                    <h6 className="ms-4"><strong>You rated:</strong></h6>
+                                                    {userRating.rating === 1 ?
+                                                        <h6 className="ms-4 text-success">Underpriced</h6>
+                                                    : 
+                                                        userRating.rating === 2 ?
+                                                            <h6 className="ms-4 text-warning">Fair Value</h6>
+                                                        : 
+                                                            <h6 className="ms-4 text-danger">Overpriced</h6>
+                                                    }
+                                                </div>
+                                            :
+                                                <h6 className="ms-4"><strong>Rate listing <i className="bi bi-hand-thumbs-up"></i></strong></h6>
+                                            }
+                                        </>
                                     }
                                     <ul className="dropdown-menu no-min-width-pc">
                                         <li><div className="dropdown-item text-success" onClick={() => handleRating(1)}>Underpriced</div></li>
@@ -181,24 +191,33 @@ export default function ListingPage() {
                                 <p className="card-text mb-0" onClick={(e) => e.stopPropagation()}>Added by: <Link to={`/viewUser/${author}`} >{author}</Link></p>
                                 <RatingStars author={author} /> 
                                 <p className="card-text"><small className="text-body-secondary">{formatTime(added)}</small></p>
-                                <p className="card-text text-secondary mt-auto"><i className="bi bi-chat-left"></i> ({comments?.length})<i className="bi bi-hand-thumbs-up"></i> ({ratings?.length})</p>
+                                <p className="card-text text-secondary mt-auto"><i className="bi bi-chat-left"></i> ({comments?.length})<i className="bi bi bi-hand-index"></i> ({ratings?.length})</p>
                             </div>
                             <div className="dropdown d-flex flex-column align-items-center" onClick={(e) => e.stopPropagation()}>
-                                <img className="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={75} height={60}/>
-                                {userRating ?
-                                    <div>
-                                        <h6><strong>You rated:</strong></h6>
-                                        {userRating.rating === 1 ?
-                                            <h6 className=" text-success">Underpriced</h6>
-                                        : 
-                                            userRating.rating === 2 ?
-                                                <h6 className="text-warning">Fair Value</h6>
-                                            : 
-                                                <h6 className="text-danger">Overpriced</h6>
-                                        }
-                                    </div>
+                                {userInfo?.username === author ?
+                                    <>
+                                        <img src={imgRating()} width={75} height={60}/>
+                                        <h6><strong>My listing</strong></h6>
+                                    </>
                                 :
-                                    <h6><strong>Rate listing <i className="bi bi-hand-index"></i></strong></h6>
+                                    <>
+                                        <img className="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={75} height={60}/>
+                                        {userRating ?
+                                            <div>
+                                                <h6><strong>You rated:</strong></h6>
+                                                {userRating.rating === 1 ?
+                                                    <h6 className=" text-success">Underpriced</h6>
+                                                : 
+                                                    userRating.rating === 2 ?
+                                                        <h6 className="text-warning">Fair Value</h6>
+                                                    : 
+                                                        <h6 className="text-danger">Overpriced</h6>
+                                                }
+                                            </div>
+                                        :
+                                            <h6><strong>Rate listing <i className="bi bi-hand-index"></i></strong></h6>
+                                        }
+                                    </>
                                 }
                                 <ul className="dropdown-menu no-min-width-mobile">
                                     <li><div className="dropdown-item text-success" onClick={() => handleRating(1)}>Underpriced</div></li>
