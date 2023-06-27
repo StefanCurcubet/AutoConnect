@@ -8,6 +8,8 @@ const initialState = {
     isLogged : false,
     settings: {},
     settingsModalOpen : false,
+    pinId : null,
+    pinCorrect: false,
     isLoading : false,
 }
 
@@ -129,6 +131,44 @@ export const updateSettings = createAsyncThunk('user/updateSettings', async (mod
     }
 })
 
+export const createPin = createAsyncThunk('user/createPin', async () => {
+    const {access} = JSON.parse(localStorage.getItem('authTokens'))
+    const response = await fetch('http://127.0.0.1:8000/createPin/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${access}`
+        },
+    });
+    if (response.status === 200) {
+        return response.json()
+    } else {
+        const data = await response.json()
+        throw new Error(filterMessage(JSON.stringify(data)))
+    }
+});
+
+export const verifyPin = createAsyncThunk('user/verifyPin', async(pin, thunkAPI) => {
+    console.log('trying to verufy');
+    const {access} = JSON.parse(localStorage.getItem('authTokens'))
+    const pinId = thunkAPI.getState().user.pinId
+    console.log(pinId);
+    const response = await fetch(`http://127.0.0.1:8000/verifyPin/${pinId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type' : 'application/json',
+            'Authorization' : `Bearer ${access}`, 
+        },
+        body: JSON.stringify(pin)
+    })
+    if (response.status === 200) {
+        return response.json()
+    } else {
+        const data = await response.json()
+        throw new Error(filterMessage(JSON.stringify(data)))
+    }
+})
+
 const userSlice = createSlice({
     name : 'userSlice',
     initialState,
@@ -218,6 +258,33 @@ const userSlice = createSlice({
         },
         [updateSettings.rejected]: (state, action) => {
             alert(action.payload)
+            state.isLoading = false
+        },
+        [createPin.pending]: (state) => {
+            state.isLoading = true
+        },
+        [createPin.fulfilled]: (state, action) => {
+            state.pinId = action.payload
+            state.isLoading = false
+        },
+        [createPin.rejected]: (state, action) => {
+            alert(action.payload)
+            state.isLoading = false
+        },
+        [verifyPin.pending]: (state) => {
+            state.isLoading = true
+        },
+        [verifyPin.fulfilled]: (state, action) => {
+            if (action.payload) {
+                state.pinCorrect = true
+            } else {
+                alert('Pin incorrect')
+            }
+            console.log('fulfilled the verification');
+            state.isLoading = false
+        },
+        [verifyPin.rejected]: (state, action) => {
+            alert('verify rejected')
             state.isLoading = false
         },
     }

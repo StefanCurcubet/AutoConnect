@@ -23,8 +23,6 @@ export default function ListingPage() {
     const [comments, setComments] = useState()
     const [newComment, setNewComment] = useState()
 
-    console.log(userInfo);
-
     let userRating = listing?.ratings.find((rating) => rating.rated_by === userInfo?.user_id)
 
     function formatTime(timeStamp){
