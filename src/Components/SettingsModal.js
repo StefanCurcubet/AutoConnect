@@ -40,34 +40,33 @@ export default function SettingsModal() {
             return
         }
         setIsModified(false)
-        if (modifiedSettings.email != settings.email) {
+        if (modifiedSettings.email !== settings.email) {
             setIsModified(true)
         }
-        if (modifiedSettings.notify_by_mail_message != settings.notify_by_mail_message) {
+        if (modifiedSettings.notify_by_mail_message !== settings.notify_by_mail_message) {
             setIsModified(true)
         }
-        if (modifiedSettings.notify_by_mail_comment != settings.notify_by_mail_comment) {
+        if (modifiedSettings.notify_by_mail_comment !== settings.notify_by_mail_comment) {
             setIsModified(true)
         }
     },[modifiedSettings])
 
+    useEffect(() => {
+        if (pinCorrect) {
+            dispatch(updateSettings(modifiedSettings),
+            setEmailPin(''),
+            setUpdateSent(true))
+        }
+    }, [pinCorrect])
+
     function handleSave() {
-        if (modifiedSettings.email != settings.email) {
+        if (modifiedSettings.email !== settings.email || settings.email_confirmed === false) {
             dispatch(createPin())
             setEmailPinWindow(true)
             return
         }
         dispatch(updateSettings(modifiedSettings),
         setUpdateSent(true))
-    }
-
-    function handleConfirmEmail() {
-        if (!pinCorrect) {
-            dispatch(verifyPin(emailPin))
-        } else {
-            dispatch(updateSettings(modifiedSettings),
-            setUpdateSent(true))
-        }
     }
 
     return (
@@ -93,26 +92,37 @@ export default function SettingsModal() {
                                 <>
                                     <h6>Email sent to {modifiedSettings.email} containing the validation PIN</h6>
                                     <input type="text" className="form-control mt-1" id="pin" value={emailPin} placeholder="enter PIN here"  onChange={(e) => setEmailPin(e.target.value)} required/>
-                                    <button className="btn btn-success mt-2" onClick={() => handleConfirmEmail()}>Confirm</button>
+                                    <button className="btn btn-success mt-2" onClick={() => dispatch(verifyPin(emailPin))}>Confirm</button>
                                 </>
                             :
                                 <>
-                                    <label htmlFor="email" className="form-label">Email adress:</label>
-                                    <input type="text" className="form-control" id="email" value={modifiedSettings?.email} onChange={(e) => setModifiedSettings((prevSetting) => ({...prevSetting, email : e.target.value}))} required/>
-                                    <h6 className="mt-2">Notify me by email for:</h6>
-                                    <div className="form-check">
-                                        <input className="form-check-input" type="checkbox" id="messages" onChange={(e) => setModifiedSettings((prevSetting) => ({...prevSetting, notify_by_mail_message : e.target.checked}))} checked={modifiedSettings?.notify_by_mail_message}/>
-                                        <label className="form-check-label" htmlFor="messages">
-                                            Messages received
-                                        </label>
-                                    </div>
-                                    <div className="form-check">
-                                        <input className="form-check-input" type="checkbox" id="comments" onChange={(e) => setModifiedSettings((prevSetting) => ({...prevSetting, notify_by_mail_comment : e.target.checked}))} checked={modifiedSettings?.notify_by_mail_comment}/>
-                                        <label className="form-check-label" htmlFor="comments">
-                                            Comments on my listings
-                                        </label>
-                                    </div>
-                                    <button className="btn btn-success mt-2" disabled={!isModified} onClick={() => handleSave()}>Save Changes</button>
+                                    {settings.email_confirmed ?
+                                        <>
+                                            <label htmlFor="email" className="form-label">Email adress:</label>
+                                            <input type="text" className="form-control" id="email" value={modifiedSettings?.email} onChange={(e) => setModifiedSettings((prevSetting) => ({...prevSetting, email : e.target.value}))} required/>
+                                            <h6 className="mt-2">Notify me by email for:</h6>
+                                            <div className="form-check">
+                                                <input className="form-check-input" type="checkbox" id="messages" onChange={(e) => setModifiedSettings((prevSetting) => ({...prevSetting, notify_by_mail_message : e.target.checked}))} checked={modifiedSettings?.notify_by_mail_message}/>
+                                                <label className="form-check-label" htmlFor="messages">
+                                                    Messages received
+                                                </label>
+                                            </div>
+                                            <div className="form-check">
+                                                <input className="form-check-input" type="checkbox" id="comments" onChange={(e) => setModifiedSettings((prevSetting) => ({...prevSetting, notify_by_mail_comment : e.target.checked}))} checked={modifiedSettings?.notify_by_mail_comment}/>
+                                                <label className="form-check-label" htmlFor="comments">
+                                                    Comments on my listings
+                                                </label>
+                                            </div>
+                                            <button className="btn btn-success mt-2" disabled={!isModified} onClick={() => handleSave()}>Save Changes</button>
+                                        </>
+                                    : 
+                                        <>
+                                            <h5>Please confirm your email</h5>
+                                            <label htmlFor="email" className="form-label">Email adress:</label>
+                                            <input type="text" className="form-control" id="email" value={modifiedSettings?.email} onChange={(e) => setModifiedSettings((prevSetting) => ({...prevSetting, email : e.target.value}))} required/>
+                                            <button className="btn btn-success mt-2" onClick={() => handleSave()}>Confirm</button>
+                                        </>
+                                    }
                                 </>
                             }
                         </>

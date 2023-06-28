@@ -13,13 +13,13 @@ const initialState = {
     isLoading : false,
 }
 
-export const createUser = createAsyncThunk('user/createUser', async ({username, password}) => {
+export const createUser = createAsyncThunk('user/createUser', async ({username, password, email}) => {
     const response = await fetch('http://127.0.0.1:8000/newUser/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({'username': username, 'password': password}),
+        body: JSON.stringify({'username': username, 'password': password, 'email': email}),
     });
     if (response.status === 200) {
         alert('Account created')
@@ -265,6 +265,7 @@ const userSlice = createSlice({
         },
         [createPin.fulfilled]: (state, action) => {
             state.pinId = action.payload
+            state.pinCorrect = false
             state.isLoading = false
         },
         [createPin.rejected]: (state, action) => {
@@ -276,15 +277,16 @@ const userSlice = createSlice({
         },
         [verifyPin.fulfilled]: (state, action) => {
             if (action.payload) {
+                console.log(action.payload);
                 state.pinCorrect = true
             } else {
-                alert('Pin incorrect')
+                alert('PIN incorrect')
+                state.pinCorrect = false
             }
-            console.log('fulfilled the verification');
             state.isLoading = false
         },
         [verifyPin.rejected]: (state, action) => {
-            alert('verify rejected')
+            alert('Unable to verify')
             state.isLoading = false
         },
     }
