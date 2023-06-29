@@ -118,7 +118,6 @@ export default function SettingsModal() {
                                     : 
                                         <>
                                             <h5>Please confirm your email</h5>
-                                            <label htmlFor="email" className="form-label">Email adress:</label>
                                             <input type="text" className="form-control" id="email" value={modifiedSettings?.email} onChange={(e) => setModifiedSettings((prevSetting) => ({...prevSetting, email : e.target.value}))} required/>
                                             <button className="btn btn-success mt-2" onClick={() => handleSave()}>Confirm</button>
                                         </>
