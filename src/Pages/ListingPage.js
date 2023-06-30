@@ -11,13 +11,14 @@ import under from '../Images/listing-rating-under.png';
 import unrated from '../Images/listing-rating-unrated.png'
 import { getAllSellerRatings, ratePost } from "../Features/browseSlice";
 import RatingStars from "../Components/RatingStars";
+import { MoonLoader } from "react-spinners";
 
 export default function ListingPage() {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const {listingId} = useParams()
-    const {favouritedPosts, isLogged, userInfo} = useSelector((store) => store.user)
+    const {favouritedPosts, isLogged, userInfo, isLoading} = useSelector((store) => store.user)
     const {allSellerRatings} = useSelector((store) => store.browse)
     const [listing, setListing] = useState()
     const [comments, setComments] = useState()
@@ -129,12 +130,18 @@ export default function ListingPage() {
                             <p className="card-text text-secondary mt-auto"><i className="bi bi-chat-left"></i> ({comments?.length})<i className="bi bi bi-hand-index"></i> ({ratings?.length})</p>
                             </div>
                             <h5 className="d-flex flex-column align-items-center">
-                                <div>
+                                <div className="d-flex">
                                     <strong className="ms-5 text-danger"> {price} EUR</strong>
-                                    {favouritedPosts.split(',').includes(`${id}`) ?
-                                        <i className="bi bi-star-fill ms-3 text-danger star-hover" onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
+                                    {isLoading ?
+                                        <MoonLoader loading={isLoading} size={15.56} className="ms-3 mt-auto"/>
                                     :
-                                        <i className="bi bi-star ms-3 star-hover " onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
+                                        <>
+                                            {favouritedPosts.split(',').includes(`${id}`) ?
+                                                <i className="bi bi-star-fill ms-3 text-danger star-hover" onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
+                                            :
+                                                <i className="bi bi-star ms-3 star-hover " onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
+                                            }
+                                        </>
                                     }
                                 </div>
                                 <div className="dropdown d-flex flex-column align-items-center" onClick={(e) => e.stopPropagation()}>
@@ -175,12 +182,18 @@ export default function ListingPage() {
                         <div className="d-sm-none d-flex justify-content-between h-100" >
                             <div className="d-flex flex-column">
                                 <h5><strong>{title}</strong></h5>
-                                <h5>
+                                <h5 className="d-flex">
                                     <strong className="text-danger"> {price} EUR</strong>
-                                    {favouritedPosts.split(',').includes(`${id}`) ?
-                                        <i className="bi bi-star-fill ms-3 text-danger star-hover" onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
+                                    {isLoading ?
+                                        <MoonLoader loading={isLoading} size={15.56} className="ms-3 mt-auto"/>
                                     :
-                                        <i className="bi bi-star ms-3 star-hover " onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
+                                        <>
+                                            {favouritedPosts.split(',').includes(`${id}`) ?
+                                                <i className="bi bi-star-fill ms-3 text-danger star-hover" onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
+                                            :
+                                                <i className="bi bi-star ms-3 star-hover " onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
+                                            }
+                                        </>
                                     }
                                 </h5>
                                 <p className="card-text mb-1">{brand}</p>

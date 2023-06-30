@@ -35,7 +35,7 @@ export default function Navbar() {
                     :
                         <>
                             <i className="bi bi-person-circle me-1"></i>
-                            <h6 className="m-0">Guest</h6>
+                            <h6 className="m-0" style={{cursor:'default'}}>Guest</h6>
                         </>
                     }
                 </div>
@@ -80,7 +80,7 @@ export default function Navbar() {
                     :
                         <>
                             <i className="bi bi-person-circle me-1"></i>
-                            <h6 className="m-0">Guest</h6>
+                            <h6 className="m-0" style={{cursor:'default'}}>Guest</h6>
                         </>
                     }
                 </div>
