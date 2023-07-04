@@ -12,6 +12,7 @@ import ListingPage from './Pages/ListingPage';
 import MessagingPage from './Pages/MessagingPage';
 import { getConversations } from './Features/messagingSlice';
 import UserPage from './Pages/UserPage';
+import PasswordResetPage from './Pages/PasswordResetPage';
 
 function App() {
 
@@ -44,6 +45,7 @@ function App() {
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/login' element={<AuthPage />} />
+          <Route path='/reset/:resetCode' element={<PasswordResetPage />} />
           <Route path='/viewListing/:listingId' element={<ListingPage />} />
           <Route path='/viewUser/:userName' element={<UserPage />} />
           <Route path='/favourites' element={<FavouritesPage />} />

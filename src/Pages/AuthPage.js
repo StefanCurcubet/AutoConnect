@@ -3,10 +3,12 @@ import { loginUser, createUser } from "../Features/userSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import verifySignUp from "../Utils/verifySignUp"
+import PasswordResetModal from "../Components/PasswordResetModal"
 
 export default function AuthPage() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [passwordResetModalOpen, setPasswordResetModalOpen] = useState(false)
     const {isLogged} = useSelector((store) => store.user)
     const [hasAccount, setHasAccount] = useState(true)
     const [userData, setUserData] = useState({
@@ -48,6 +50,7 @@ export default function AuthPage() {
                             <input type="username" className="form-control" id="username-input" onChange={(e) => setUserData({...userData, username : e.target.value})}/>
                             <label htmlFor="password-input">Password</label>
                             <input type="password" className="form-control" id="password-input" onChange={(e) => setUserData({...userData, password : e.target.value})}/>
+                            <p className="text-primary" style={{cursor:'pointer'}} onClick={() => setPasswordResetModalOpen(true)}>I forgot my password</p>
                         </>
                     :
                         <>  
@@ -67,6 +70,7 @@ export default function AuthPage() {
                     {!hasAccount && userData.password !== userData.passwordConf ? <p>Password confirmation does not match</p> : null}
                 </div>
             </div>
+            <PasswordResetModal passwordResetModalOpen={passwordResetModalOpen} setPasswordResetModalOpen={setPasswordResetModalOpen} />
         </div>
     )
 }

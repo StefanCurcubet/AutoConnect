@@ -21,7 +21,7 @@ export default function HomePage() {
         }
     },[orderby])
 
-    let posts = allPosts.map((post) => <Post key={post.id} postData={post}/>).filter((post) => checkFilter(post, filter))
+    let posts = allPosts?.map((post) => <Post key={post.id} postData={post}/>).filter((post) => checkFilter(post, filter))
 
     return (
         <div className="container-lg mb-2">
@@ -29,7 +29,7 @@ export default function HomePage() {
                 <FilterDropdown />
                 <SortDropdown />
             </div>
-            {isLoading ? <h1 className="mt-5">Loading...</h1> : posts.length === 0 ? <h1 className="mt-5">Sorry, no posts match your criteria</h1> : posts}
+            {isLoading ? <h1 className="mt-5">Loading...</h1> : posts?.length === 0 ? <h1 className="mt-5">Sorry, no posts match your criteria</h1> : posts}
         </div>
     )
 }
