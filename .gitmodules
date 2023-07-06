@@ -1,0 +1,3 @@
+[submodule "AutoConnectBackend"]
+	path = AutoConnectBackend
+	url = https://github.com/StefanCurcubet/AutoConnectBackend
