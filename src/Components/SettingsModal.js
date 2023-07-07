@@ -76,16 +76,16 @@ export default function SettingsModal() {
             ariaHideApp={false}
         >
             <div className="card">
-                <div className='card-header d-flex'>
+                <div className='card-header d-flex justify-content-between'>
                     <div>Settings</div>
-                    <i className="bi bi-x-lg ms-auto" style={{cursor: 'pointer'}} onClick={() => (dispatch(setSettingsModal(false)), setUpdateSent(false), setEmailPinWindow(false))}></i>
+                    <i className="bi bi-x-lg ms-2" style={{cursor: 'pointer'}} onClick={() => (dispatch(setSettingsModal(false)), setUpdateSent(false), setEmailPinWindow(false))}></i>
                 </div>
                 <div className="card-body d-flex flex-column">
                     {updateSent ?
                         isLoading ? 
-                            <FadeLoader loading={isLoading}/>
+                            <FadeLoader loading={isLoading} cssOverride={{left: '36px'}} />
                         :
-                            <h2 className="text-success">Settings Updated !</h2>
+                            <h2 className="text-success text-center">Settings Updated !</h2>
                     :
                         <>
                             {emailPinWindow ?
@@ -118,7 +118,7 @@ export default function SettingsModal() {
                                     : 
                                         <>
                                             <h5>Please confirm your email</h5>
-                                            <input type="text" className="form-control" id="email" value={modifiedSettings?.email} onChange={(e) => setModifiedSettings((prevSetting) => ({...prevSetting, email : e.target.value}))} required/>
+                                            <h4 className="bg-light p-1">{modifiedSettings?.email}</h4>
                                             <button className="btn btn-success mt-2" onClick={() => handleSave()}>Confirm</button>
                                         </>
                                     }

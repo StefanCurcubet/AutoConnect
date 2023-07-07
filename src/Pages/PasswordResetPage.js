@@ -35,6 +35,7 @@ export default function PasswordResetPage() {
         })
         if (response.status === 200) {
             let data = await response.json()
+            setIsValidCode(false)
             setStatusMessage(data.message)
         } else {
             setStatusMessage("Something went wrong")
@@ -56,7 +57,7 @@ export default function PasswordResetPage() {
                     {statusMessage}
                 </div>
             :
-                <h3 className="mt-3 ms-3">Invalid reset code.</h3>
+                <h3 className="mt-3 ms-3">{statusMessage === '' ? 'Invalid reset code.' : statusMessage}</h3>
             }
         </>
     )
