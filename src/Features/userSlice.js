@@ -8,6 +8,7 @@ const initialState = {
     isLogged : false,
     settings: {},
     settingsModalOpen : false,
+    deleteModalOpen: false,
     pinId : null,
     pinCorrect: false,
     isLoading : false,
@@ -28,6 +29,23 @@ export const createUser = createAsyncThunk('user/createUser', async ({username, 
         alert('User already exists');
     }
 });
+
+export const deleteUser = createAsyncThunk('user/deleteUser', async () => {
+    const {access} = JSON.parse(localStorage.getItem('authTokens'))
+    const response = await fetch('http://127.0.0.1:8000/deleteUser/', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type' : 'application/json',
+            'Authorization' : `Bearer ${access}`,
+        }
+    })
+    if (response.status === 200) {
+        return response.json();
+    } else {
+        const data = await response.json()
+        throw new Error(filterMessage(JSON.stringify(data)));
+    }
+})
 
 export const loginUser = createAsyncThunk('user/loginUser', async ({username, password}) => {
     const response = await fetch('http://127.0.0.1:8000/token/', {
@@ -186,7 +204,10 @@ const userSlice = createSlice({
         },
         setSettingsModal: (state, action) => {
             state.settingsModalOpen = action.payload
-        }
+        },
+        setDeleteModal: (state, action) => {
+            state.deleteModalOpen = action.payload
+        },
     },
     extraReducers : {
         [loginUser.pending]: (state) => {
@@ -289,8 +310,21 @@ const userSlice = createSlice({
             alert('Unable to verify')
             state.isLoading = false
         },
+        [deleteUser.pending]: (state) => {
+            state.isLoading = true
+        },
+        [deleteUser.fulfilled]: (state) => {
+            userSlice.caseReducers.logout(state)
+            state.deleteModalOpen = false
+            alert('Account deleted')
+            state.isLoading = false
+        },
+        [deleteUser.rejected]: (state, action) => {
+            alert(action.payload)
+            state.isLoading = false
+        },
     }
 })
 
-export const {logout, getLocalTokens, setSettingsModal} = userSlice.actions
+export const {logout, getLocalTokens, setSettingsModal, setDeleteModal} = userSlice.actions
 export default userSlice.reducer

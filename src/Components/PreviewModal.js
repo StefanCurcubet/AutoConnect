@@ -17,7 +17,6 @@ export default function PreviewModal({previewOpen, setPreviewOpen, listingData, 
         <Modal
             isOpen={previewOpen}
             style={customStyles}
-            ariaHideApp={false}
         >
             <div>
                 <div className="card">

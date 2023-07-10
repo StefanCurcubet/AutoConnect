@@ -36,7 +36,6 @@ export default function PasswordResetModal({passwordResetModalOpen, setPasswordR
         <Modal
             isOpen={passwordResetModalOpen}
             style={customStyles}
-            ariaHideApp={false}
         >
             <div className="card">
                 <div className='card-header d-flex'>

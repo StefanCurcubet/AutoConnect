@@ -30,7 +30,6 @@ export default function MessageModal({recipient}) {
         <Modal
             isOpen={messageModalOpen}
             style={customStyles}
-            ariaHideApp={false}
         >
             {isLogged ?
                 (messageSent ?

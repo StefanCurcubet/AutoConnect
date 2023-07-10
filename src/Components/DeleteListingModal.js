@@ -30,7 +30,6 @@ export default function DeleteListingModal({getSelectedUser}) {
         <Modal
             isOpen={deleteModal.open}
             style={customStyles}
-            ariaHideApp={false}
         >
             <div>
                 <div className="card">

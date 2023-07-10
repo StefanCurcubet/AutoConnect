@@ -1,7 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { getSettings, logout, setSettingsModal } from "../Features/userSlice";
+import { getSettings, logout, setSettingsModal, setDeleteModal } from "../Features/userSlice";
 import SettingsModal from "./SettingsModal";
+import DeleteAccountModal from "./DeleteAccountModal";
 
 export default function Navbar() {
 
@@ -28,8 +29,9 @@ export default function Navbar() {
                                 <Link to={`/viewUser/${userInfo.username}`} className="nav-link ps-3" style={{cursor: 'pointer'}}>
                                     My Profile
                                 </Link>
-                                <li className="nav-link ps-3" style={{cursor: 'pointer'}} onClick={() => (dispatch(setSettingsModal(true)), dispatch(getSettings()))}>Settings</li>
+                                <li className="nav-link ps-3" style={{cursor: 'pointer'}} onClick={() => {dispatch(setSettingsModal(true)); dispatch(getSettings())}}>Settings</li>
                                 <li className="nav-link ps-3" style={{cursor: 'pointer'}} onClick={() => {dispatch(logout()); navigate('/')}}> Log out</li>
+                                <li className="nav-link ps-3 text-danger" style={{cursor: 'pointer'}} onClick={() => (dispatch(setDeleteModal(true)))}>Delete Account</li>
                             </ul>
                         </div>
                     :
@@ -73,8 +75,9 @@ export default function Navbar() {
                                 <Link to={`/viewUser/${userInfo.username}`} className="nav-link ps-3" style={{cursor: 'pointer'}}>
                                     My Profile
                                 </Link>
-                                <li className="nav-link ps-3" style={{cursor: 'pointer'}} onClick={() => (dispatch(setSettingsModal(true)), dispatch(getSettings()))}>Settings</li>
+                                <li className="nav-link ps-3" style={{cursor: 'pointer'}} onClick={() => {dispatch(setSettingsModal(true)); dispatch(getSettings())}}>Settings</li>
                                 <li className="nav-link ps-3" style={{cursor: 'pointer'}} onClick={() => {dispatch(logout()); navigate('/')}}> Log out</li>
+                                <li className="nav-link ps-3 text-danger" style={{cursor: 'pointer'}} onClick={() => (dispatch(setDeleteModal(true)))}>Delete Account</li>
                             </ul>
                         </div>
                     :
@@ -86,6 +89,7 @@ export default function Navbar() {
                 </div>
             </nav>
             <SettingsModal />
+            <DeleteAccountModal />
         </>
     )
 }

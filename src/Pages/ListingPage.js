@@ -166,7 +166,7 @@ export default function ListingPage() {
                                                     }
                                                 </div>
                                             :
-                                                <h6 className="ms-4"><strong>Rate listing <i className="bi bi-hand-thumbs-up"></i></strong></h6>
+                                                <h6 className="ms-4"><strong>Rate listing <i className="bi bi-hand-index"></i></strong></h6>
                                             }
                                         </>
                                     }

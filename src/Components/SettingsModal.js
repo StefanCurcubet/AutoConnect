@@ -73,7 +73,6 @@ export default function SettingsModal() {
         <Modal
             isOpen={settingsModalOpen}
             style={customStyles}
-            ariaHideApp={false}
         >
             <div className="card">
                 <div className='card-header d-flex justify-content-between'>
