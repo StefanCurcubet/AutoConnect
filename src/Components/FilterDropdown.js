@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setFilter, clearFilters } from "../Features/browseSlice";
+import { setFilter, clearFilters } from "../Features/postSlice";
 
 export default function FilterDropdown() {
 
     const dispatch = useDispatch()
-    const filter = useSelector((store) => store.browse.filter)
+    const filter = useSelector((store) => store.post.filter)
     let activeFilterNr = 0;
     for (let prop in filter) {
         if (filter[prop] !== "") {

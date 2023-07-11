@@ -9,42 +9,42 @@ import fair from '../Images/listing-rating-fair.png';
 import over from '../Images/listing-rating-over.png';
 import under from '../Images/listing-rating-under.png';
 import unrated from '../Images/listing-rating-unrated.png'
-import { getAllSellerRatings, ratePost } from "../Features/browseSlice";
+import { getAllSellerRatings, ratePost } from "../Features/postSlice";
 import RatingStars from "../Components/RatingStars";
 import { MoonLoader } from "react-spinners";
 
-export default function ListingPage() {
+export default function PostPage() {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const {listingId} = useParams()
+    const {postId} = useParams()
     const {favouritedPosts, isLogged, userInfo, isLoading} = useSelector((store) => store.user)
-    const {allSellerRatings} = useSelector((store) => store.browse)
-    const [listing, setListing] = useState()
+    const {allSellerRatings} = useSelector((store) => store.post)
+    const [post, setPost] = useState()
     const [comments, setComments] = useState()
     const [newComment, setNewComment] = useState()
 
-    let userRating = listing?.ratings.find((rating) => rating.rated_by === userInfo?.user_id)
+    let userRating = post?.ratings.find((rating) => rating.rated_by === userInfo?.user_id)
 
     function formatTime(timeStamp){
         return new Date(timeStamp).toLocaleString()
     }
 
-    async function getListing() {
-        const response = await fetch(`http://127.0.0.1:8000/getListing/${listingId}`)
+    async function getPost() {
+        const response = await fetch(`http://127.0.0.1:8000/getPost/${postId}`)
         const data = await response.json()
-        setListing(data)
+        setPost(data)
     }
 
     async function getComments() {
-        const response = await fetch(`http://127.0.0.1:8000/getComments/${listingId}`)
+        const response = await fetch(`http://127.0.0.1:8000/getComments/${postId}`)
         const data = await response.json()
         setComments(data)
     }
 
     async function addComment() {
         const {access} = JSON.parse(localStorage.getItem('authTokens'))
-        const response = await fetch (`http://127.0.0.1:8000/addComment/${listingId}`, {
+        const response = await fetch (`http://127.0.0.1:8000/addComment/${postId}`, {
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/json',
@@ -60,7 +60,7 @@ export default function ListingPage() {
     }
 
     useEffect(() => {
-        getListing()
+        getPost()
         getComments()
         if (allSellerRatings.length === 0) { // only gets all ratings again if user refreshes page
             dispatch(getAllSellerRatings())
@@ -86,27 +86,27 @@ export default function ListingPage() {
             return
         }
         await dispatch(ratePost({id, rating}))
-        getListing()
+        getPost()
     }
 
-    if (!listing) {
+    if (!post) {
         return <h2 className="mt-3">Loading ...</h2>
     }
 
     function imgRating() {
         let image = unrated
-        if (listing.current_rating === 1) {
+        if (post.current_rating === 1) {
             image = under
-        } else if (listing.current_rating === 2) {
+        } else if (post.current_rating === 2) {
             image = fair
-        } else if (listing.current_rating === 3) {
+        } else if (post.current_rating === 3) {
             image = over  
         }
         return image
     }
 
-    const {id, title, imageUrl, brand, modelYear, mileage, price, author, added, ratings} = listing
-    const commentList = comments?.map((comment) => <Comment key={comment.id} data={comment} listingAuthor={author}/>)
+    const {id, title, imageUrl, brand, modelYear, mileage, price, author, added, ratings} = post
+    const commentList = comments?.map((comment) => <Comment key={comment.id} data={comment} postAuthor={author}/>)
 
     return (
         <div className="container-lg" style={{cursor: 'default'}}>
@@ -147,12 +147,12 @@ export default function ListingPage() {
                                 <div className="dropdown d-flex flex-column align-items-center" onClick={(e) => e.stopPropagation()}>
                                     {userInfo?.username === author ?
                                         <>
-                                            <img className="ms-4 mt-2" src={imgRating()} width={95} height={80}/>
+                                            <img className="ms-4 mt-2" src={imgRating()} width={95} height={80} alt="rating"/>
                                             <h6 className="ms-4"><strong>My listing</strong></h6>
                                         </>
                                     :
                                         <>
-                                            <img className="ms-4 mt-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={95} height={80}/>
+                                            <img className="ms-4 mt-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={95} height={80} alt="rating"/>
                                             {userRating ?
                                                 <div>
                                                     <h6 className="ms-4"><strong>You rated:</strong></h6>
@@ -207,12 +207,12 @@ export default function ListingPage() {
                             <div className="dropdown d-flex flex-column align-items-center" onClick={(e) => e.stopPropagation()}>
                                 {userInfo?.username === author ?
                                     <>
-                                        <img src={imgRating()} width={75} height={60}/>
+                                        <img src={imgRating()} width={75} height={60} alt="rating"/>
                                         <h6><strong>My listing</strong></h6>
                                     </>
                                 :
                                     <>
-                                        <img className="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={75} height={60}/>
+                                        <img className="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={75} height={60} alt="rating"/>
                                         {userRating ?
                                             <div>
                                                 <h6><strong>You rated:</strong></h6>

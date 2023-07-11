@@ -3,15 +3,15 @@ import Post from "../Components/Post";
 import FilterDropdown from "../Components/FilterDropdown";
 import SortDropdown from "../Components/SortDropdown";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllPosts } from "../Features/browseSlice";
+import { getAllPosts } from "../Features/postSlice";
 import checkFilter from "../Utils/checkFilter";
 import { getFavourites } from "../Features/userSlice";
-import { getAllSellerRatings } from "../Features/browseSlice";
+import { getAllSellerRatings } from "../Features/postSlice";
 
 export default function HomePage() {
 
     const dispatch = useDispatch()
-    const {allPosts, orderby, filter, isLoading} = useSelector((store) => store.browse)
+    const {allPosts, orderby, filter, isLoading} = useSelector((store) => store.post)
 
     useEffect(() => {
         dispatch(getAllPosts())

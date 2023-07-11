@@ -48,7 +48,7 @@ export default function Navbar() {
                         <Link to={'/favourites'} className="nav-link p-2" style={{cursor: 'pointer'}}>
                             Favourites
                         </Link>
-                        <Link to={'/newListing'} className="nav-link p-2" style={{cursor: 'pointer'}}>
+                        <Link to={'/newPost'} className="nav-link p-2" style={{cursor: 'pointer'}}>
                             Create New Listing
                         </Link>
                         <div className="d-flex">

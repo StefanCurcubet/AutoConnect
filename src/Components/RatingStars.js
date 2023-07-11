@@ -2,7 +2,7 @@ import { useSelector } from "react-redux"
 
 export default function RatingStars({author}) {
 
-    const {allSellerRatings} = useSelector((store) => store.browse)
+    const {allSellerRatings} = useSelector((store) => store.post)
     let rating = 0
     let rating_count = 0
     let stars = []

@@ -22,16 +22,16 @@ const initialState = {
 }
 
 
-export const getAllPosts = createAsyncThunk('browse/getAllPosts', (_, thunkAPI) => {
-    const orderby = thunkAPI.getState().browse.orderby
+export const getAllPosts = createAsyncThunk('post/getAllPosts', (_, thunkAPI) => {
+    const orderby = thunkAPI.getState().post.orderby
     return fetch(`http://127.0.0.1:8000/getAllPosts/${orderby}`)
     .then((response) => response.json())
     .catch((error) => console.log(error))
 })
 
-export const ratePost = createAsyncThunk('browse/ratePost', async ({id, rating}) => {
+export const ratePost = createAsyncThunk('post/ratePost', async ({id, rating}) => {
     const {access} = JSON.parse(localStorage.getItem('authTokens'))
-    const response = await fetch (`http://127.0.0.1:8000/rateListing/${id}/${rating}`, {
+    const response = await fetch (`http://127.0.0.1:8000/ratePost/${id}/${rating}`, {
         method: 'POST',
         headers: {
             'Content-Type' : 'application/json',
@@ -46,7 +46,7 @@ export const ratePost = createAsyncThunk('browse/ratePost', async ({id, rating})
     }
 })
 
-export const getAllSellerRatings = createAsyncThunk('browse/getAllSellerRatings', async() => {
+export const getAllSellerRatings = createAsyncThunk('post/getAllSellerRatings', async() => {
     const response = await fetch('http://127.0.0.1:8000/getAllSellerRatings/')
     if (response.status === 200) {
         return response.json()
@@ -56,7 +56,7 @@ export const getAllSellerRatings = createAsyncThunk('browse/getAllSellerRatings'
     }
 })
 
-export const getSellerRating = createAsyncThunk('browse/getSellerRating', async(username) => {
+export const getSellerRating = createAsyncThunk('post/getSellerRating', async(username) => {
     const response = await fetch(`http://127.0.0.1:8000/getSellerRating/${username}`)
     if (response.status === 200) {
         return response.json()
@@ -66,10 +66,10 @@ export const getSellerRating = createAsyncThunk('browse/getSellerRating', async(
     }
 })
 
-export const deletePost = createAsyncThunk(`browse/deletePost/`, async (_,thunkAPI) => {
+export const deletePost = createAsyncThunk(`post/deletePost/`, async (_,thunkAPI) => {
     const {access} = JSON.parse(localStorage.getItem('authTokens'))
-    const {selectedPost} = thunkAPI.getState().browse.deleteModal
-    const response = await fetch (`http://127.0.0.1:8000/deleteListing/${selectedPost}`, {
+    const {selectedPost} = thunkAPI.getState().post.deleteModal
+    const response = await fetch (`http://127.0.0.1:8000/deletePost/${selectedPost}`, {
         method: 'DELETE',
         headers: {
             'Content-Type' : 'application/json',
@@ -84,8 +84,8 @@ export const deletePost = createAsyncThunk(`browse/deletePost/`, async (_,thunkA
     }
 })
 
-const browseSlice = createSlice({
-    name : 'browse',
+const postSlice = createSlice({
+    name : 'post',
     initialState,
     reducers: {
         setOrderby: (state, action) => {
@@ -143,5 +143,5 @@ const browseSlice = createSlice({
     }
 })
 
-export const {setOrderby, setFilter, clearFilters, selectPost, setDeleteModalOpen, setDeletePost} = browseSlice.actions
-export default browseSlice.reducer
+export const {setOrderby, setFilter, clearFilters, selectPost, setDeleteModalOpen, setDeletePost} = postSlice.actions
+export default postSlice.reducer

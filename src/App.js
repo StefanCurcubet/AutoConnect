@@ -7,8 +7,8 @@ import { useEffect } from 'react';
 import { getLocalTokens, updateTokens } from './Features/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import FavouritesPage from './Pages/FavouritesPage';
-import NewListingPage from './Pages/NewListingPage';
-import ListingPage from './Pages/ListingPage';
+import NewPostPage from './Pages/NewPostPage';
+import PostPage from './Pages/PostPage';
 import MessagingPage from './Pages/MessagingPage';
 import { getConversations } from './Features/messagingSlice';
 import UserPage from './Pages/UserPage';
@@ -17,7 +17,7 @@ import PasswordResetPage from './Pages/PasswordResetPage';
 function App() {
 
   const dispatch = useDispatch()
-  const {userInfo, isLogged} = useSelector((store) => store.user)
+  const {userInfo} = useSelector((store) => store.user)
 
   function handleStart() {
     dispatch(getLocalTokens(JSON.parse(localStorage.getItem('authTokens'))))
@@ -46,10 +46,10 @@ function App() {
           <Route path='/' element={<HomePage />} />
           <Route path='/login' element={<AuthPage />} />
           <Route path='/reset/:resetCode' element={<PasswordResetPage />} />
-          <Route path='/viewListing/:listingId' element={<ListingPage />} />
+          <Route path='/viewPost/:postId' element={<PostPage />} />
           <Route path='/viewUser/:userName' element={<UserPage />} />
           <Route path='/favourites' element={<FavouritesPage />} />
-          <Route path='/newListing' element={<NewListingPage />} />
+          <Route path='/newPost' element={<NewPostPage />} />
           <Route path='/messaging' element={<MessagingPage />} />
         </Routes>
       </BrowserRouter>

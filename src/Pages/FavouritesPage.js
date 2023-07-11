@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom"
 export default function FavouritePage(){
 
     const {favouritedPosts, isLogged} = useSelector((store) => (store.user))
-    const {allPosts} = useSelector((store) => (store.browse))
+    const {allPosts} = useSelector((store) => (store.post))
     const navigate = useNavigate()
 
     useEffect(() => {

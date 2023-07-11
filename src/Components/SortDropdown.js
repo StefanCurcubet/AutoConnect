@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux"
-import { setOrderby } from "../Features/browseSlice"
+import { setOrderby } from "../Features/postSlice"
 
 export default function SortDropdown() {
 

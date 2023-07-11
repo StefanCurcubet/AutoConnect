@@ -1,15 +1,12 @@
 import Modal from 'react-modal';
 import { useDispatch, useSelector } from "react-redux";
-import { deletePost } from "../Features/browseSlice";
-import { useNavigate } from "react-router-dom";
-import { setDeleteModalOpen } from "../Features/browseSlice";
+import { deletePost } from "../Features/postSlice";
+import { setDeleteModalOpen } from "../Features/postSlice";
 
-export default function DeleteListingModal({getSelectedUser}) {
+export default function DeletePostModal({getSelectedUser}) {
 
-    const {userInfo} = useSelector((store) => store.user)
-    const {deleteModal} = useSelector((store) => store.browse)
+    const {deleteModal} = useSelector((store) => store.post)
     const dispatch = useDispatch()
-    const navigate = useNavigate()
 
     const customStyles = {
         content: {

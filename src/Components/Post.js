@@ -5,10 +5,10 @@ import fair from '../Images/listing-rating-fair.png'
 import over from '../Images/listing-rating-over.png'
 import under from '../Images/listing-rating-under.png'
 import unrated from '../Images/listing-rating-unrated.png'
-import { getAllPosts, ratePost, setDeleteModalOpen, setDeletePost } from "../Features/browseSlice";
+import { getAllPosts, ratePost, setDeleteModalOpen, setDeletePost } from "../Features/postSlice";
 import { Link } from "react-router-dom";
 import RatingStars from "./RatingStars";
-import { FadeLoader, MoonLoader } from "react-spinners";
+import { MoonLoader } from "react-spinners";
 
 export default function Post({postData}){
 
@@ -36,7 +36,7 @@ export default function Post({postData}){
     }
 
     function handleSelect() {
-        navigate(`/viewListing/${id}`)
+        navigate(`/viewPost/${id}`)
     }
 
     async function handleRating(rating){
@@ -82,7 +82,7 @@ export default function Post({postData}){
                                 <p className="card-text"><small className="text-body-secondary">{formatTime(added)}</small></p>
                                 <p className="card-text text-secondary mt-auto"><i className="bi bi-chat-left"></i> ({comments?.length})<i className="bi bi-hand-index"></i> ({ratings?.length})</p>
                                 {isLogged && userInfo.username === userName ?
-                                    <button className="btn btn-danger me-auto" onClick={(e) => (e.stopPropagation(), dispatch(setDeleteModalOpen(true)), dispatch(setDeletePost(id)))}>Delete listing</button>
+                                    <button className="btn btn-danger me-auto" onClick={(e) => {e.stopPropagation(); dispatch(setDeleteModalOpen(true)); dispatch(setDeletePost(id))}}>Delete listing</button>
                                 : 
                                     null
                                 }
@@ -105,12 +105,12 @@ export default function Post({postData}){
                                 <div className="dropdown d-flex flex-column align-items-center" onClick={(e) => e.stopPropagation()}>
                                     {userInfo?.username === author ?
                                         <>
-                                            <img className="ms-4 mt-2" src={imgRating()} width={95} height={80}/>
+                                            <img className="ms-4 mt-2" src={imgRating()} width={95} height={80} alt="rating"/>
                                             <h6 className="ms-4"><strong>My listing</strong></h6>
                                         </>
                                     :
                                         <>
-                                            <img className="ms-4 mt-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={95} height={80}/>
+                                            <img className="ms-4 mt-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={95} height={80} alt="rating"/>
                                             {userRating ?
                                                 <div>
                                                     <h6 className="ms-4"><strong>You rated:</strong></h6>
@@ -163,7 +163,7 @@ export default function Post({postData}){
                                 <p className="card-text"><small className="text-body-secondary">{formatTime(added)}</small></p>
                                 <p className="card-text text-secondary mt-auto"><i className="bi bi-chat-left"></i> ({comments?.length})<i className="bi bi bi-hand-index"></i> ({ratings?.length})</p>
                                 {isLogged && userInfo.username === userName ?
-                                    <button className="btn btn-danger me-auto" onClick={(e) => (e.stopPropagation(), dispatch(setDeleteModalOpen(true)), dispatch(setDeletePost(id)))}>Delete listing</button>
+                                    <button className="btn btn-danger me-auto" onClick={(e) => {e.stopPropagation(); dispatch(setDeleteModalOpen(true)); dispatch(setDeletePost(id))}}>Delete listing</button>
                                 : 
                                     null
                                 }
@@ -171,12 +171,12 @@ export default function Post({postData}){
                             <div className="dropdown d-flex flex-column align-items-center ms-auto" onClick={(e) => e.stopPropagation()}>
                                 {userInfo?.username === author ?
                                     <>
-                                        <img src={imgRating()} width={75} height={60}/>
+                                        <img src={imgRating()} width={75} height={60} alt="rating"/>
                                         <h6><strong>My listing</strong></h6>
                                     </>
                                 :
                                     <>
-                                        <img className="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={75} height={60}/>
+                                        <img className="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{cursor:"pointer"}} src={imgRating()} width={75} height={60} alt="rating"/>
                                         {userRating ?
                                             <div>
                                                 <h6><strong>You rated:</strong></h6>

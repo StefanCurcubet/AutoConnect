@@ -1,8 +1,8 @@
 import Modal from 'react-modal';
 
-export default function PreviewModal({previewOpen, setPreviewOpen, listingData, createListing}) {
+export default function PreviewModal({previewOpen, setPreviewOpen, postData, createPost}) {
 
-    const {title, imageUrl, make, firstRegistration, mileage, price, description} = listingData
+    const {title, imageUrl, make, firstRegistration, mileage, price, description} = postData
 
     const customStyles = {
         content: {
@@ -47,7 +47,7 @@ export default function PreviewModal({previewOpen, setPreviewOpen, listingData, 
                     </div>
                 </div>
                 <div className='d-flex mt-3'>
-                    <button className='btn btn-success' onClick={() => createListing()}>Submit Listing</button>
+                    <button className='btn btn-success' onClick={() => createPost()}>Submit Listing</button>
                     <button className='btn btn-danger ms-2' onClick={() => setPreviewOpen(false)}>Cancel</button>
                 </div>
             </div>
