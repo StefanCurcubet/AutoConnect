@@ -5,13 +5,13 @@ import MessageModal from "../Components/MessageModal"
 import { setMessageModalOpen } from "../Features/messagingSlice"
 import Post from "../Components/Post"
 import RatingStars from "../Components/RatingStars"
-import DeleteListingModal from "../Components/DeleteListingModal"
-import { getAllSellerRatings } from "../Features/browseSlice"
+import DeletePostModal from "../Components/DeletePostModal"
+import { getAllSellerRatings } from "../Features/postSlice"
 
 export default function UserPage() {
     const {userName} = useParams()
     const {isLogged, userInfo} = useSelector((store) => store.user)
-    const {allSellerRatings} = useSelector((store) => store.browse)
+    const {allSellerRatings} = useSelector((store) => store.post)
     const [selectedUserData, setSelectedUserData] = useState()
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -93,7 +93,7 @@ export default function UserPage() {
                     }
                 </div>
                 <MessageModal recipient={userName} />
-                <DeleteListingModal getSelectedUser={getSelectedUser}/>
+                <DeletePostModal getSelectedUser={getSelectedUser}/>
             </div>
             <h2 className="text-center">Listings</h2>
             {user_listings}
