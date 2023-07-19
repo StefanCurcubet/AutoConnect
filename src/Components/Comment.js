@@ -1,4 +1,4 @@
-export default function Comment({data, listingAuthor}) {
+export default function Comment({data, postAuthor}) {
 
     const {author, content, added} = data
 
@@ -8,7 +8,7 @@ export default function Comment({data, listingAuthor}) {
 
     return (
         <>
-        {listingAuthor === author ?
+        {postAuthor === author ?
             <div className="card bg-light border-primary-subtle mb-3">
                 <div className="card-body">
                     <h6 className="card-title">{author} <strong className="bg-dark-subtle p-1">Owner</strong></h6>
