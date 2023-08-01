@@ -8,7 +8,6 @@ import unrated from '../Images/listing-rating-unrated.png'
 import { getAllPosts, ratePost, setDeleteModalOpen, setDeletePost } from "../Features/postSlice";
 import { Link } from "react-router-dom";
 import RatingStars from "./RatingStars";
-import { MoonLoader } from "react-spinners";
 
 export default function Post({postData}){
 
@@ -90,17 +89,11 @@ export default function Post({postData}){
                             <h5 className="d-flex flex-column align-items-center">
                                 <div className="d-flex">
                                     <strong className="ms-5 text-danger"> {price} EUR</strong>
-                                    {isLoading ?
-                                        <MoonLoader loading={isLoading} size={15.56} className="ms-3 mt-auto"/>
-                                    :
-                                    <>
                                         {favouritedPosts.split(',').includes(`${id}`) ?
                                             <i className="bi bi-star-fill ms-3 text-danger star-hover" onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
                                         :
                                             <i className="bi bi-star ms-3 star-hover " onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
                                         }
-                                    </>
-                                    }
                                 </div>
                                 <div className="dropdown d-flex flex-column align-items-center" onClick={(e) => e.stopPropagation()}>
                                     {userInfo?.username === author ?
@@ -143,17 +136,11 @@ export default function Post({postData}){
                                 <h5><strong>{title}</strong></h5>
                                 <h5 className="d-flex">
                                     <strong className="text-danger"> {price} EUR</strong>
-                                    {isLoading ?
-                                        <MoonLoader loading={isLoading} size={15.56} className="ms-3 mt-auto"/>
-                                    :
-                                        <>
-                                            {favouritedPosts.split(',').includes(`${id}`) ?
-                                                <i className="bi bi-star-fill ms-3 text-danger star-hover" onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
-                                            :
-                                                <i className="bi bi-star ms-3 star-hover " onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
-                                            }
-                                        </>
-                                    }
+                                        {favouritedPosts.split(',').includes(`${id}`) ?
+                                            <i className="bi bi-star-fill ms-3 text-danger star-hover" onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
+                                        :
+                                            <i className="bi bi-star ms-3 star-hover " onClick={(e) => updateFavourite(id, e)} style={{cursor: "pointer"}}></i>
+                                        }
                                 </h5>
                                 <p className="card-text mb-1">{brand}</p>
                                 <p className="card-text mb-1">{modelYear}</p>

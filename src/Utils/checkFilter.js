@@ -1,7 +1,7 @@
 export default function checkFilter(post, filter) {
     const {brand, modelYear, price, mileage} = post.props.postData
     let displayPost = true
-    if (brand !== filter.make && filter.make !== "") {
+    if ( brand.toUpperCase() !== filter.make.toUpperCase() && filter.make !== "") {
         displayPost = false
     }
     if (modelYear < filter.registration_from && filter.registration_from !== "") {
