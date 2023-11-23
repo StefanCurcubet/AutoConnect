@@ -4,6 +4,7 @@ import ConversationPartner from "../Components/ConversationPartner"
 import Message from "../Components/Message"
 import { getConversations, getMessages } from "../Features/messagingSlice"
 import { useNavigate } from "react-router-dom"
+import emojiCheck from "../Utils/emojiCheck"
 
 
 export default function MessagingPage() {
@@ -124,7 +125,7 @@ export default function MessagingPage() {
                                 <hr ref={largeScrollRef}/>
                             </div>
                             <div className="card card-body d-flex no-border">
-                                <textarea style={{borderRadius:"5px"}} placeholder="Type here..." value={reply} onChange={(e) => setReply(e.target.value)} />
+                                <textarea style={{borderRadius:"5px"}} placeholder="Type here..." value={reply} onChange={(e) => setReply(emojiCheck(e.target.value))} />
                                 <div className="d-flex">
                                     <button className="btn btn-outline-primary ms-auto me-2 mt-2" onClick={() => handleMessage()}>Send</button>
                                 </div>
